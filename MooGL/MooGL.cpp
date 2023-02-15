@@ -22,7 +22,7 @@ void MooGL::Display()
 	glClearColor(0.094f, 0.094f, 0.094f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT); //this clears the scene
 	
-	// Render first shape (rectangle)
+	// Render first shape (square)
 	glBegin(GL_POLYGON);
 	glColor4f(0.811f, 0.321f, 0.949f, 0.372f);
 	glVertex2f(0.25, 0.75); 
