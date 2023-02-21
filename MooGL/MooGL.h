@@ -6,6 +6,8 @@
 #include "GL\freeglut.h" //freeglut library
 #include "GLUTCallbacks.h" //GLUTCallbacks
 
+#define REFRESHRATE 16
+
 class MooGL
 {
 public:
@@ -17,4 +19,9 @@ public:
 	~MooGL(void);
 
 	void Display();
+
+	void Update();
+
+private:
+	float rotation;
 };

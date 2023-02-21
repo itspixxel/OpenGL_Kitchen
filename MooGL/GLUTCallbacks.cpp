@@ -24,4 +24,9 @@ namespace GLUTCallbacks
 			mooGL->Display();
 		}
 	}
+	void Timer(int preferredRefresh)
+	{
+		mooGL->Update();
+		glutTimerFunc(preferredRefresh, GLUTCallbacks::Timer, preferredRefresh);
+	}
 }
