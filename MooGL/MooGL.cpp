@@ -6,9 +6,12 @@ MooGL::MooGL(int argc, char* argv[])
 	rotation = 0.0f;
 	GLUTCallbacks::Init(this);
 	glutInit(&argc, argv);
+	glutInitDisplayMode(GLUT_DOUBLE);
 	glutInitWindowSize(800, 800);
-	glutCreateWindow("Simple OpenGL Program");
+	glutInitWindowPosition(100, 100);
+	glutCreateWindow("MooGL");
 	glutDisplayFunc(GLUTCallbacks::Display);
+	glutKeyboardFunc(GLUTCallbacks::Keyboard);
 	glutTimerFunc(REFRESHRATE, GLUTCallbacks::Timer, REFRESHRATE);
 	glutMainLoop();
 }
@@ -86,16 +89,29 @@ void MooGL::Display()
 
 
 	glFlush(); //flushes the scene drawn to the graphics card
+	glutSwapBuffers();
 }
 
 void MooGL::Update()
 {
 	glutPostRedisplay();
-	rotation += 0.5f;
+	//rotation += 0.5f;
 
 	if (rotation >= 360.0f)
 	{
 		rotation = 0.0f;
+	}
+}
+
+void MooGL::Keyboard(unsigned char key, int x, int y)
+{
+	if (key == 'd')
+	{
+		rotation += 0.5f;
+	}
+	if (key == 'a')
+	{
+		rotation -= 0.5f;
 	}
 }
 
