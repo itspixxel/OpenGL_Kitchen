@@ -22,6 +22,8 @@ public:
 
 	void Update();
 
+	void Keyboard(unsigned char key, int x, int y);
+
 private:
 	float rotation;
 };
