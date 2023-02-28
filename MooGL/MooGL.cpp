@@ -3,35 +3,54 @@
 
 MooGL::MooGL(int argc, char* argv[])
 {
+	// Creates an instance of a camera
+	camera = new Camera();
+	camera->eye.x = 0.0f; camera->eye.y = 0.0f; camera->eye.z = 0.5f;
+	camera->center.x = 0.0f; camera->center.y = 0.0f; camera->center.z = 0.0f;
+	camera->up.x = 0.0f; camera->up.y = 1.0f; camera->up.z = 0.0f;
+
 	rotation = 0.0f;
+
 	GLUTCallbacks::Init(this);
 	glutInit(&argc, argv);
+
 	glutInitDisplayMode(GLUT_DOUBLE);
 	glutInitWindowSize(800, 800);
 	glutInitWindowPosition(100, 100);
 	glutCreateWindow("MooGL");
+
+	// Tell GLUT about funcs
 	glutDisplayFunc(GLUTCallbacks::Display);
 	glutKeyboardFunc(GLUTCallbacks::Keyboard);
 	glutTimerFunc(REFRESHRATE, GLUTCallbacks::Timer, REFRESHRATE);
+
+	// Switch to Project mode to set up the camera
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	glViewport(0, 0, 800, 800);
+	gluPerspective(45, 1, 0, 500);
+
+	// Switch back to ModelView mode
+	glMatrixMode(GL_MODELVIEW);
+
 	glutMainLoop();
 }
 
 // Commence the DESTRUCTION!
 MooGL::~MooGL(void)
 {
-	
+	delete camera;
 }
 
 void MooGL::Display()
 {
 	glClearColor(0.094f, 0.094f, 0.094f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT); //this clears the scene
-	
 
 	// Render first shape (square)
 	glPushMatrix();
-
-		glRotatef(rotation, 0.0f, 0.0f, -1.0f);
+		glTranslatef(0.0f, 0.0f, -2.0f);
+		glRotatef(rotation, 1.0f, 0.0f, 1.0f);
 	
 		
 		glBegin(GL_POLYGON);
@@ -47,10 +66,10 @@ void MooGL::Display()
 
 	glPopMatrix();
 
-
 	// Render second shape (triangle)
 	glPushMatrix();
 
+	glTranslatef(0.0f, 0.0f, -2.0f);
 	glRotatef(rotation, 0.0f, 1.0f, 1.0f);
 
 		glBegin(GL_TRIANGLES);
@@ -64,10 +83,10 @@ void MooGL::Display()
 
 	glPopMatrix();
 
-
 	// Render a circle with 64 sides
 	glPushMatrix();
 
+	glTranslatef(0.0f, 0.0f, -2.0f);
 	glRotatef(rotation, 1.0f, 1.0f, 1.0f);
 
 		const int num_segments = 64;
@@ -87,13 +106,25 @@ void MooGL::Display()
 
 	glPopMatrix();
 
+	// Renders a cube
+	glPushMatrix();
+	
+		glColor4f(0.968f, 0.407f, 0.509f, 0.380f); // Center color
+		glRotatef(rotation, 1.0f, 0.8f, 0.5f);
+		glutWireIcosahedron();
 
-	glFlush(); //flushes the scene drawn to the graphics card
+	glPopMatrix();
+
+
+	glFlush(); // Flushes the scene drawn to the graphics card
 	glutSwapBuffers();
 }
 
 void MooGL::Update()
 {
+	glLoadIdentity();
+	gluLookAt(camera->eye.x, camera->eye.y, camera->eye.z, camera->center.x, camera->center.y, camera->center.z, camera->up.x, camera->up.y, camera->up.z);
+
 	glutPostRedisplay();
 	//rotation += 0.5f;
 
@@ -107,20 +138,28 @@ void MooGL::Keyboard(unsigned char key, int x, int y)
 {
 	if (key == 'd')
 	{
-		rotation += 0.5f;
+		rotation += 1.0f;
 	}
 	if (key == 'a')
 	{
-		rotation -= 0.5f;
+		rotation -= 1.0f;
+	}
+	if (key == 'w')
+	{
+		camera->eye.z -= 0.25f;
+	}
+	if (key == 's')
+	{
+		camera->eye.z += 0.25f;
 	}
 }
 
 
 int main(int argc, char* argv[])
 {
-	//Creates an instance of our game
+	// Creates an instance of our game
 	MooGL* moo = new MooGL(argc, argv);
 
-	//Assumes a successful exit if our game exits
+	// Assumes a successful exit if our game exits
 	return 0;
 }
