@@ -8,6 +8,20 @@
 
 #define REFRESHRATE 16
 
+struct Vector3
+{
+	float x;
+	float y;
+	float z;
+};
+
+struct Camera
+{
+	Vector3 eye;
+	Vector3 center;
+	Vector3 up;
+};
+
 class MooGL
 {
 public:
@@ -26,4 +40,6 @@ public:
 
 private:
 	float rotation;
+
+	Camera* camera;
 };
