@@ -5,41 +5,41 @@
 #include <gl/GLU.h> //OpenGL Utilities 
 #include "GL\freeglut.h" //freeglut library
 #include "GLUTCallbacks.h" //GLUTCallbacks
+#include "Structures.h"
 
 #define REFRESHRATE 16
 
-struct Vector3
-{
-	float x;
-	float y;
-	float z;
-};
-
-struct Camera
-{
-	Vector3 eye;
-	Vector3 center;
-	Vector3 up;
-};
-
 class MooGL
 {
-public:
+	public:
+		//constructor definition
+		MooGL(int argc, char* argv[]);
 
-	//contructor definition
-	MooGL(int argc, char* argv[]);
+		//destructor
+		~MooGL(void);
 
-	//destructor
-	~MooGL(void);
+		void Display();
 
-	void Display();
+		void Update();
 
-	void Update();
+		void Keyboard(unsigned char key, int x, int y);
 
-	void Keyboard(unsigned char key, int x, int y);
+		void DrawCube();
 
-private:
-	float rotation;
+		void DrawCubeArray();
 
-	Camera* camera;
+		void DrawIndexedCube();
+
+	private:
+		float rotation;
+
+		Camera* camera;
+
+		static Vertex vertices[];
+		static Color colors[];
+
+		static Vertex indexedVertices[];
+		static Color indexedColors[];
+		static GLushort indices[];
+
 };
