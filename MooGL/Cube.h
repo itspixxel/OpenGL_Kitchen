@@ -7,15 +7,18 @@
 
 class Cube
 {
-private:
-	static Vertex indexedVertices[];
-	static Color indexedColors[];
-	static GLushort indices[];
+	public:
+		Cube(float x, float y, float z);
+		~Cube();
 
-public:
-	Cube();
-	~Cube();
+		void Draw();
+		void Update();
 
-	void Draw();
-	void Update();
+	private:
+		static Vertex indexedVertices[];
+		static Color indexedColors[];
+		static GLushort indices[];
+
+		GLfloat rotation = 0.0f;
+		Vector3 position;
 };

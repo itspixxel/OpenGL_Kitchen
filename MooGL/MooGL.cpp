@@ -1,60 +1,5 @@
 #include "MooGL.h"
-
-Vertex MooGL::vertices[] = { 1, 1, 1,  -1, 1, 1,  -1,-1, 1,      // v0-v1-v2 (front)
-				-1,-1, 1,   1,-1, 1,   1, 1, 1,      // v2-v3-v0
-
-				1, 1, 1,   1,-1, 1,   1,-1,-1,      // v0-v3-v4 (right)
-				1,-1,-1,   1, 1,-1,   1, 1, 1,      // v4-v5-v0
-
-				1, 1, 1,   1, 1,-1,  -1, 1,-1,      // v0-v5-v6 (top)
-				-1, 1,-1,  -1, 1, 1,   1, 1, 1,      // v6-v1-v0
-
-				-1, 1, 1,  -1, 1,-1,  -1,-1,-1,      // v1-v6-v7 (left)
-				-1,-1,-1,  -1,-1, 1,  -1, 1, 1,      // v7-v2-v1
-
-				-1,-1,-1,   1,-1,-1,   1,-1, 1,      // v7-v4-v3 (bottom)
-				1,-1, 1,  -1,-1, 1,  -1,-1,-1,      // v3-v2-v7
-
-				1,-1,-1,  -1,-1,-1,  -1, 1,-1,      // v4-v7-v6 (back)
-				-1, 1,-1,   1, 1,-1,   1,-1,-1 };    // v6-v5-v4
-
-Color MooGL::colors[] = { 1, 1, 1,   1, 1, 0,   1, 0, 0,      // v0-v1-v2 (front)
-				1, 0, 0,   1, 0, 1,   1, 1, 1,      // v2-v3-v0
-
-				1, 1, 1,   1, 0, 1,   0, 0, 1,      // v0-v3-v4 (right)
-				0, 0, 1,   0, 1, 1,   1, 1, 1,      // v4-v5-v0
-
-				1, 1, 1,   0, 1, 1,   0, 1, 0,      // v0-v5-v6 (top)
-				0, 1, 0,   1, 1, 0,   1, 1, 1,      // v6-v1-v0
-
-				1, 1, 0,   0, 1, 0,   0, 0, 0,      // v1-v6-v7 (left)
-				0, 0, 0,   1, 0, 0,   1, 1, 0,      // v7-v2-v1
-
-				0, 0, 0,   0, 0, 1,   1, 0, 1,      // v7-v4-v3 (bottom)
-				1, 0, 1,   1, 0, 0,   0, 0, 0,      // v3-v2-v7
-
-				0, 0, 1,   0, 0, 0,   0, 1, 0,      // v4-v7-v6 (back)
-				0, 1, 0,   0, 1, 1,   0, 0, 1 };    // v6-v5-v4
-
-Vertex MooGL::indexedVertices[] = { 1, 1, 1,  -1, 1, 1,  // v0,v1,
-				-1,-1, 1,   1,-1, 1,   // v2,v3
-				1,-1,-1,   1, 1,-1,    // v4,v5
-				-1, 1,-1,   -1,-1,-1 }; // v6,v7
-
-Color MooGL::indexedColors[] = { 1, 1, 1,   1, 1, 0,   // v0,v1,
-				1, 0, 0,   1, 0, 1,   // v2,v3
-				0, 0, 1,   0, 1, 1,   // v4,v5
-				0, 1, 0,   0, 0, 0 }; //v6,v7
-
-GLushort MooGL::indices[] = { 0, 1, 2,  2, 3, 0,      // front
-				0, 3, 4,  4, 5, 0,      // right
-				0, 5, 6,  6, 1, 0,      // top
-				1, 6, 7,  7, 2, 1,      // left
-				7, 4, 3,  3, 2, 7,      // bottom
-				4, 7, 6,  6, 5, 4 };    // back
-
-
-#include <cmath>
+#include <math.h>
 
 MooGL::MooGL(int argc, char* argv[])
 {
@@ -69,7 +14,7 @@ MooGL::MooGL(int argc, char* argv[])
 	GLUTCallbacks::Init(this);
 	glutInit(&argc, argv);
 
-	glutInitDisplayMode(GLUT_DOUBLE);
+	glutInitDisplayMode(GLUT_DOUBLE | GLUT_DEPTH);
 	glutInitWindowSize(800, 800);
 	glutInitWindowPosition(100, 100);
 	glutCreateWindow("MooGL");
@@ -92,6 +37,8 @@ MooGL::MooGL(int argc, char* argv[])
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_BACK);
 
+	glEnable(GL_DEPTH_TEST);
+
 	glutMainLoop();
 }
 
@@ -104,7 +51,7 @@ MooGL::~MooGL(void)
 void MooGL::Display()
 {
 	glClearColor(0.094f, 0.094f, 0.094f, 1.0f);
-	glClear(GL_COLOR_BUFFER_BIT); //this clears the scene
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); //this clears the scene
 
 	// Render first shape (square)
 	glPushMatrix();
@@ -165,9 +112,7 @@ void MooGL::Display()
 
 	glPopMatrix();
 
-	// DrawCube method call
-	DrawIndexedCube();
-
+	cube->Draw();
 
 	glFlush(); // Flushes the scene drawn to the graphics card
 	glutSwapBuffers();
@@ -179,6 +124,8 @@ void MooGL::Update()
 	gluLookAt(camera->eye.x, camera->eye.y, camera->eye.z, camera->center.x, camera->center.y, camera->center.z, camera->up.x, camera->up.y, camera->up.z);
 
 	glutPostRedisplay();
+
+	// Constant rotation
 	//rotation += 0.5f;
 
 	if (rotation >= 360.0f)
@@ -210,131 +157,6 @@ void MooGL::Keyboard(unsigned char key, int x, int y)
 		camera->eye.z += 1.0f;
 	}
 }
-
-void MooGL::DrawCube()
-{
-	glBegin(GL_TRIANGLES);
-	// face v0-v1-v2
-	glColor3f(1, 1, 1);
-	glVertex3f(1, 1, 1);
-	glColor3f(1, 1, 0);
-	glVertex3f(-1, 1, 1);
-	glColor3f(1, 0, 0);
-	glVertex3f(-1, -1, 1);
-	// face v2-v3-v0
-	glColor3f(1, 0, 0);
-	glVertex3f(-1, -1, 1);
-	glColor3f(1, 0, 1);
-	glVertex3f(1, -1, 1);
-	glColor3f(1, 1, 1);
-	glVertex3f(1, 1, 1);
-	// face v0-v3-v4
-	glColor3f(1, 1, 1);
-	glVertex3f(1, 1, 1);
-	glColor3f(1, 0, 1);
-	glVertex3f(1, -1, 1);
-	glColor3f(0, 0, 1);
-	glVertex3f(1, -1, -1);
-	// face v4-v5-v0
-	glColor3f(0, 0, 1);
-	glVertex3f(1, -1, -1);
-	glColor3f(0, 1, 1);
-	glVertex3f(1, 1, -1);
-	glColor3f(1, 1, 1);
-	glVertex3f(1, 1, 1);
-	// face v0-v5-v6
-	glColor3f(1, 1, 1);
-	glVertex3f(1, 1, 1);
-	glColor3f(0, 1, 1);
-	glVertex3f(1, 1, -1);
-	glColor3f(0, 1, 0);
-	glVertex3f(-1, 1, -1);
-	// face v6-v1-v0
-	glColor3f(0, 1, 0);
-	glVertex3f(-1, 1, -1);
-	glColor3f(1, 1, 0);
-	glVertex3f(-1, 1, 1);
-	glColor3f(1, 1, 1);
-	glVertex3f(1, 1, 1);
-	// face  v1-v6-v7
-	glColor3f(1, 1, 0);
-	glVertex3f(-1, 1, 1);
-	glColor3f(0, 1, 0);
-	glVertex3f(-1, 1, -1);
-	glColor3f(0, 0, 0);
-	glVertex3f(-1, -1, -1);
-	// face v7-v2-v1
-	glColor3f(0, 0, 0);
-	glVertex3f(-1, -1, -1);
-	glColor3f(1, 0, 0);
-	glVertex3f(-1, -1, 1);
-	glColor3f(1, 1, 0);
-	glVertex3f(-1, 1, 1);
-	// face v7-v4-v3
-	glColor3f(0, 0, 0);
-	glVertex3f(-1, -1, -1);
-	glColor3f(0, 0, 1);
-	glVertex3f(1, -1, -1);
-	glColor3f(1, 0, 1);
-	glVertex3f(1, -1, 1);
-	// face v3-v2-v7
-	glColor3f(1, 0, 1);
-	glVertex3f(1, -1, 1);
-	glColor3f(1, 0, 0);
-	glVertex3f(-1, -1, 1);
-	glColor3f(0, 0, 0);
-	glVertex3f(-1, -1, -1);
-
-	// face v4-v7-v6
-	glColor3f(0, 0, 1);
-	glVertex3f(1, -1, -1);
-	glColor3f(0, 0, 0);
-	glVertex3f(-1, -1, -1);
-	glColor3f(0, 1, 0);
-	glVertex3f(-1, 1, -1);
-	// face v6-v5-v4
-	glColor3f(0, 1, 0);
-	glVertex3f(-1, 1, -1);
-	glColor3f(0, 1, 1);
-	glVertex3f(1, 1, -1);
-	glColor3f(0, 0, 1);
-	glVertex3f(1, -1, -1);
-
-	glEnd();
-}
-
-void MooGL::DrawCubeArray()
-{
-	glPushMatrix();
-
-		glBegin(GL_TRIANGLES);
-			for (int i = 0; i < 36; i++)
-			{
-				glColor3fv(&colors[i].r);
-				glVertex3fv(&vertices[i].x);
-			}
-		glEnd();
-
-	glPopMatrix();
-}
-
-void MooGL::DrawIndexedCube()
-{
-	glPushMatrix();
-
-	glBegin(GL_TRIANGLES);
-	for (int i = 0; i < 36; i++)
-	{
-		Vertex v = indexedVertices[indices[i]];
-		Color c = indexedColors[indices[i]];
-		glColor3f(c.r, c.g, c.b);
-		glVertex3f(v.x, v.y, v.z);
-	}
-	glEnd();
-
-	glPopMatrix();
-}
-
 
 int main(int argc, char* argv[])
 {
