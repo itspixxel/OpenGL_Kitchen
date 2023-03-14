@@ -19,6 +19,8 @@ class Cube
 		static Color indexedColors[];
 		static GLushort indices[];
 
+		static int numVertices, numColors, numIndices;
+
 		GLfloat rotation = 0.0f;
 		Vector3 position;
 };

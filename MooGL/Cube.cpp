@@ -36,7 +36,7 @@ void Cube::Draw()
 	glPushMatrix();
 
 		glTranslatef(position.x, position.y, position.z);
-		glRotatef(rotation, 1.0f, 0.0f, 0.0f);
+		glRotatef(rotation, 1.0f, 1.0f, 1.0f);
 		glBegin(GL_TRIANGLES);
 
 			for (int i = 0; i < 36; i++)
@@ -54,5 +54,5 @@ void Cube::Draw()
 
 void Cube::Update()
 {
-	rotation += 0.1f;
+	rotation += 5.0f;
 }

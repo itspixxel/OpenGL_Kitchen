@@ -26,5 +26,5 @@ class MooGL
 		float rotation;
 
 		Camera* camera;
-		Cube* cube;
+		Cube* cube[6000];
 };
