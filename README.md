@@ -5,21 +5,25 @@
 <br/>
 <div align="center"><img src="demo.gif"></img></div>
 <h2>About</h2>
-Context and progress go here
+Learning how to use OpenGL using FreeGLUT by creating a 3D scene from scratch.
 
 <h2>Goal and requirements</h2>
 
-The idea behind first implementation. What is expected, what should be included, what should not be included.
+To develop a coherent C++ application incorporating various 3D graphics techniques with OpenGL and FreeGLUT. The application is able to read and render one or more objects from file, and user interaction can modify the camera and scene objects.
 
 <h2>Key learnings</h2>
 
-- Be 
-- clear
-- brief 
-- and 
-- concise
+- Loading and Rendering of Multiple Objects
+- Animated/Moving 3D Objects
+- Complex objects loaded from a suitable file type (e.g. .obj)
+- Texturing
+- Materials and Lighting
+- Scene Graph
+- HUD or suitable Text Display
+- Camera Movement
+- User Input to control objects and/or camera
 
-If project has been improved after submission, here is a good place to specify it.
+<!-- If project has been improved after submission, here is a good place to specify it. -->
 
 <h2>Project status</h2>
-Insert here
+<img src="https://progress-bar.dev/24/?width=400">
