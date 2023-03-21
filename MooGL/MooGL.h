@@ -6,6 +6,7 @@
 #include "GL\freeglut.h" //freeglut library
 #include "GLUTCallbacks.h" //GLUTCallbacks
 #include "Structures.h" // Structs
+#include "MeshLoader.h" // MeshLoader class
 #include "Cube.h" // Cube class
 
 // Refresh rate pre-processor
@@ -15,6 +16,9 @@ class MooGL
 {
 	public:
 		MooGL(int argc, char* argv[]);
+
+		void InitObjects();
+		void InitGL(int argc, char* argv[]);
 
 		~MooGL(void);
 

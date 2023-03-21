@@ -23,3 +23,11 @@ struct Camera
 	Vector3 center;
 	Vector3 up;
 };
+
+struct Mesh
+{
+	Vertex* Vertices;
+	Color* Colors;
+	GLushort* Indices;
+	int VertexCount, ColorCount, IndexCount;
+};

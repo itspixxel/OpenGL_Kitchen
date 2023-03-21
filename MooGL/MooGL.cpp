@@ -1,7 +1,15 @@
-#include "MooGL.h"
 #include <math.h>
+#include "MooGL.h"
 
 MooGL::MooGL(int argc, char* argv[])
+{
+	InitObjects();
+	InitGL(argc, argv);
+
+	glutMainLoop();
+}
+
+void MooGL::InitObjects()
 {
 	// Creates an instance of a camera
 	camera = new Camera();
@@ -11,14 +19,16 @@ MooGL::MooGL(int argc, char* argv[])
 
 	rotation = 0.0f;
 
-	Cube::Load((char*)"cube.txt");
+	Mesh* cubeMesh = MeshLoader::Load((char*) "cube.txt");
 
 	for (int i = 0; i < 6000; i++)
 	{
-		cube[i] = new Cube(((rand() % 400) / 10.0f) - 20.0f, ((rand() % 250) / 10.0f) - 10.0f, -(rand() % 1000) / 10.0f);
+		cube[i] = new Cube(cubeMesh, ((rand() % 400) / 10.0f) - 20.0f, ((rand() % 250) / 10.0f) - 10.0f, -(rand() % 1000) / 10.0f);
 	}
+}
 
-
+void MooGL::InitGL(int argc, char* argv[])
+{
 	GLUTCallbacks::Init(this);
 	glutInit(&argc, argv);
 
@@ -46,8 +56,6 @@ MooGL::MooGL(int argc, char* argv[])
 	glCullFace(GL_BACK);
 
 	glEnable(GL_DEPTH_TEST);
-
-	glutMainLoop();
 }
 
 // Commence the DESTRUCTION!
