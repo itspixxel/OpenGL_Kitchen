@@ -23,13 +23,19 @@ void MooGL::InitObjects()
 
 	rotation = 0.0f;
 
-	Mesh* cubeMesh = MeshLoader::Load((char*) "cube.txt");
+	Mesh* cubeMesh = MeshLoader::Load((char*)"cube.txt");
 	Mesh* pyramidMesh = MeshLoader::Load((char*)"pyramid.txt");
-	for (int i = 0; i < 200; i++)
+
+	for (int i = 0; i < 500; i++)
 	{
-		objects[i] = new Cube(cubeMesh, ((rand() % 400) / 10.0f) - 20.0f, ((rand() % 250) / 10.0f) - 10.0f, -(rand() % 1000) / 10.0f);
-		objects[i] = new Pyramid(pyramidMesh, ((rand() % 400) / 10.0f) - 20.0f, ((rand() % 250) / 10.0f) - 10.0f, -(rand() % 1000) / 10.0f);
+		objects[i] = new Cube(cubeMesh, ((rand() % 400) / 10.0f) - 20.0f, ((rand() % 200) / 10.0f) - 10.0f, -(rand() % 1000) / 10.0f);
+
 	}
+	for (int i = 500; i < 1000; i++)
+	{
+		objects[i] = new Pyramid(pyramidMesh, ((rand() % 400) / 10.0f) - 20.0f, ((rand() % 200) / 10.0f) - 10.0f, -(rand() % 1000) / 10.0f);
+	}
+
 }
 
 void MooGL::InitGL(int argc, char* argv[])
@@ -76,7 +82,7 @@ void MooGL::Display()
 
 	glPushMatrix();
 		glRotatef(rotation, 0.0f, 1.0f, 0.0f);
-		for (int i = 0; i < 200; i++)
+		for (int i = 0; i < 1000; i++)
 		{
 			objects[i]->Draw();
 		}
@@ -96,7 +102,7 @@ void MooGL::Update()
 	// Constant rotation
 	//rotation += 0.5f;
 
-	for (int i = 0; i < 200; i++)
+	for (int i = 0; i < 1000; i++)
 	{
 		objects[i]->Update();
 	}

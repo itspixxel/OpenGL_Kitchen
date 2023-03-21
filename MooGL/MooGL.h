@@ -26,5 +26,5 @@ class MooGL
 		float rotation;
 
 		Camera* camera;
-		SceneObject* objects[200];
+		SceneObject* objects[1000];
 };
