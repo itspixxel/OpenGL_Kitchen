@@ -1,8 +1,11 @@
-#include <math.h>
 #include "MooGL.h"
+#include <math.h>
+#include <time.h>
 
 MooGL::MooGL(int argc, char* argv[])
 {
+	
+	srand(time(NULL));
 	InitObjects();
 	InitGL(argc, argv);
 
@@ -11,6 +14,7 @@ MooGL::MooGL(int argc, char* argv[])
 
 void MooGL::InitObjects()
 {
+	
 	// Creates an instance of a camera
 	camera = new Camera();
 	camera->eye.x = 5.0f; camera->eye.y = 5.0f; camera->eye.z = 5.0f;
@@ -20,10 +24,11 @@ void MooGL::InitObjects()
 	rotation = 0.0f;
 
 	Mesh* cubeMesh = MeshLoader::Load((char*) "cube.txt");
-
-	for (int i = 0; i < 6000; i++)
+	Mesh* pyramidMesh = MeshLoader::Load((char*)"pyramid.txt");
+	for (int i = 0; i < 200; i++)
 	{
-		cube[i] = new Cube(cubeMesh, ((rand() % 400) / 10.0f) - 20.0f, ((rand() % 250) / 10.0f) - 10.0f, -(rand() % 1000) / 10.0f);
+		objects[i] = new Cube(cubeMesh, ((rand() % 400) / 10.0f) - 20.0f, ((rand() % 250) / 10.0f) - 10.0f, -(rand() % 1000) / 10.0f);
+		objects[i] = new Pyramid(pyramidMesh, ((rand() % 400) / 10.0f) - 20.0f, ((rand() % 250) / 10.0f) - 10.0f, -(rand() % 1000) / 10.0f);
 	}
 }
 
@@ -73,7 +78,7 @@ void MooGL::Display()
 		glRotatef(rotation, 0.0f, 1.0f, 0.0f);
 		for (int i = 0; i < 200; i++)
 		{
-			cube[i]->Draw();
+			objects[i]->Draw();
 		}
 	glPopMatrix();
 
@@ -93,7 +98,7 @@ void MooGL::Update()
 
 	for (int i = 0; i < 200; i++)
 	{
-		cube[i]->Update();
+		objects[i]->Update();
 	}
 
 	if (rotation >= 360.0f)

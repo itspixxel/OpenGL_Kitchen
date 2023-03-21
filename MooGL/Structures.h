@@ -1,4 +1,8 @@
 #pragma once
+#include <Windows.h> //Required for OpenGL on Windows
+#include <gl/GL.h> //OpenGL 
+#include <gl/GLU.h> //OpenGL Utilities
+#include "GL\freeglut.h" //freeglut library
 
 struct Vector3
 {

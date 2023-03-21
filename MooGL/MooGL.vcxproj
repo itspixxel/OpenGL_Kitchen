@@ -131,6 +131,8 @@
     <ClInclude Include="GLUTCallbacks.h" />
     <ClInclude Include="MeshLoader.h" />
     <ClInclude Include="MooGL.h" />
+    <ClInclude Include="Pyramid.h" />
+    <ClInclude Include="SceneObject.h" />
     <ClInclude Include="Structures.h" />
   </ItemGroup>
   <ItemGroup>
@@ -138,6 +140,8 @@
     <ClCompile Include="GLUTCallbacks.cpp" />
     <ClCompile Include="MeshLoader.cpp" />
     <ClCompile Include="MooGL.cpp" />
+    <ClCompile Include="Pyramid.cpp" />
+    <ClCompile Include="SceneObject.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
