@@ -1,8 +1,8 @@
-#include "Cube.h"
+#include "pyramid.h"
 
 using namespace std;
 
-Cube::Cube(Mesh* mesh, Texture2D* text, float x, float y, float z) : SceneObject(mesh)
+Pyramid::Pyramid(Mesh* mesh, Texture2D* text, float x, float y, float z) : SceneObject(mesh)
 {
 
 	_position = Vector3(x, y, z);
@@ -10,12 +10,12 @@ Cube::Cube(Mesh* mesh, Texture2D* text, float x, float y, float z) : SceneObject
 
 }
 
-void Cube::Update()
+void Pyramid::Update()
 {
-	//_rotation += 0.1f;
+	_rotation += 0.1f;
 }
 
-void Cube::Draw()
+void Pyramid::Draw()
 {
 
 	if (_mesh->indexedVertices != nullptr && _mesh->indexedColors != nullptr && _mesh->indices != nullptr)
@@ -23,7 +23,7 @@ void Cube::Draw()
 		glBindTexture(GL_TEXTURE_2D, _texture->GetID());
 		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 
-		glScalef(1, 1, 1);
+		glScalef(1,1,1);
 		glTranslatef(_position.x, _position.y, _position.z);
 		glRotatef(_rotation, 0.0f, 1.0f, 0.0f);
 
@@ -45,7 +45,7 @@ void Cube::Draw()
 }
 
 
-Cube::~Cube()
+Pyramid::~Pyramid()
 {
 
 }

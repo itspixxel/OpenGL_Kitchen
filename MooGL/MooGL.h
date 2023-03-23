@@ -1,30 +1,59 @@
 #pragma once
 
-#include <Windows.h> //Required for OpenGL on Windows 
-#include <gl/GL.h> //OpenGL 
-#include <gl/GLU.h> //OpenGL Utilities 
-#include "GL\freeglut.h" //freeglut library
-#include "GLUTCallbacks.h" //GLUTCallbacks
-#include "Structures.h" // Structs
-#include "Cube.h" // Cube class
+#include <Windows.h>
+#include <gl/GL.h>
+#include <gl/GLU.h>
 
-// Refresh rate pre-processor
+#include "GL\freeglut.h"
+#include "GLUTCallbacks.h"
+
+#ifndef _Texture2D
+#include "Texture2D.h"
+#endif
+
+#ifndef _Cube
+#include "Cube.h"
+#endif
+
+#ifndef _Pyramid
+#include "pyramid.h"
+#endif
+
+#ifndef _MeshLoader
+#include "MeshLoader.h"
+#endif
+
+#ifndef _SceneObject
+#include "SceneObject.h"
+#endif
+
+#ifndef _hStructs
+#include "Structures.h"
+#endif
+
+#include <vector>
+
 #define REFRESHRATE 16
 
 class MooGL
 {
 	public:
-		MooGL(int argc, char* argv[]);
 
-		~MooGL(void);
+		MooGL(int argc, char* argv[]);
 
 		void Display();
 		void Update();
+
 		void Keyboard(unsigned char key, int x, int y);
+
+		~MooGL(void);
+
+		void InitObjects();
+		void InitGL(int argc, char* argv[]);
 
 	private:
 		float rotation;
-
 		Camera* camera;
-		Cube* cube[6000];
+		std::vector<SceneObject*> objects;
+
 };

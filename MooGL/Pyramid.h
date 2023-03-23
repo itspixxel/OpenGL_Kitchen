@@ -1,8 +1,8 @@
 #pragma once
 
-#ifndef _Cube
+#ifndef _Pyramid
  
-#define _Cube
+#define _Pyramid
 
 	#include <Windows.h>
 	#include <gl/GL.h>
@@ -17,25 +17,25 @@
 	#include "SceneObject.h"
 	#endif
 
-	#ifndef _hStructs
-	#include "Structures.h"
-	#endif
-
 	#ifndef _Texture2D
 	#include "Texture2D.h"
 	#endif
 
-	class Cube : public SceneObject
+	#ifndef _hStructs
+	#include "Structures.h"
+	#endif
+
+	class Pyramid : public SceneObject
 	{
 	private:
-		Texture2D* _texture;
 		GLfloat _rotation = 0;
 		Vector3 _position;
+		Texture2D* _texture;
 
 	public:
 
-		Cube(Mesh* mesh, Texture2D* _texture, float x, float y, float z);
-		~Cube();
+		Pyramid(Mesh* mesh, Texture2D* text, float x, float y, float z);
+		~Pyramid();
 
 		void Draw();
 		void Update();

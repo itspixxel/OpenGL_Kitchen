@@ -1,126 +1,136 @@
 #include "MooGL.h"
-#include <math.h>
+
+int main(int argc, char* argv[])
+{
+	MooGL* game = new MooGL(argc, argv);
+
+	return 0;
+}
 
 MooGL::MooGL(int argc, char* argv[])
 {
-	// Creates an instance of a camera
-	camera = new Camera();
-	camera->eye.x = 5.0f; camera->eye.y = 5.0f; camera->eye.z = 5.0f;
-	camera->center.x = 0.0f; camera->center.y = 0.0f; camera->center.z = 0.0f;
-	camera->up.x = 0.0f; camera->up.y = 1.0f; camera->up.z = 0.0f;
+	srand(time(NULL));
+	InitGL(argc, argv);
+	InitObjects();
 
-	rotation = 0.0f;
+	glutMainLoop();
 
-	for (int i = 0; i < 6000; i++)
-	{
-		cube[i] = new Cube(((rand() % 400) / 10.0f) - 20.0f, ((rand() % 250) / 10.0f) - 10.0f, -(rand() % 1000) / 10.0f);
-	}
+}
 
-
+void MooGL::InitGL(int argc, char* argv[])
+{
 	GLUTCallbacks::Init(this);
+
 	glutInit(&argc, argv);
 
-	glutInitDisplayMode(GLUT_DOUBLE | GLUT_DEPTH);
+	glutInitDisplayMode(GLUT_DOUBLE);
 	glutInitWindowSize(800, 800);
 	glutInitWindowPosition(100, 100);
-	glutCreateWindow("MooGL");
+	glutCreateWindow("Simple OpenGL Program");
 
-	// Tell GLUT about funcs
 	glutDisplayFunc(GLUTCallbacks::Display);
 	glutKeyboardFunc(GLUTCallbacks::Keyboard);
+
 	glutTimerFunc(REFRESHRATE, GLUTCallbacks::Timer, REFRESHRATE);
 
-	// Switch to Project mode to set up the camera
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	glViewport(0, 0, 800, 800);
-	gluPerspective(45, 1, 1, 500);
+	gluPerspective(45, 1, 0, 1000);
 
-	// Switch back to ModelView mode
-	glMatrixMode(GL_MODELVIEW);
-
-	// Enable backface culling
+	glEnable(GL_TEXTURE_2D);
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_BACK);
 
 	glEnable(GL_DEPTH_TEST);
+	glDepthMask(GL_TRUE);
+	glDepthFunc(GL_LEQUAL);
+	glDepthRange(1, 0);
 
-	glutMainLoop();
+	glMatrixMode(GL_MODELVIEW);
+
 }
 
-// Commence the DESTRUCTION!
-MooGL::~MooGL(void)
+void MooGL::InitObjects()
 {
-	delete camera;
-}
+	rotation = 0;
+	camera = new Camera();
+	camera->eye.z = 5.0f; camera->up.y = 1.0f;
+	//camera->eye.x = 5.0f; camera->eye.y = 5.0f; camera->eye.z = -5.0f;
 
-void MooGL::Display()
-{
-	glClearColor(0.094f, 0.094f, 0.094f, 1.0f);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); //this clears the scene
+	Mesh* cubeMesh = MeshLoader::Load((char *)"cube.txt");
+	Mesh* pyramidMesh = MeshLoader::Load((char*)"pyramid.txt");
 
-	glPushMatrix();
-		glRotatef(rotation, 0.0f, 1.0f, 0.0f);
-		for (int i = 0; i < 200; i++)
-		{
-			cube[i]->Draw();
-		}
-	glPopMatrix();
+	Texture2D* texture = new Texture2D();
+	texture->Load((char*)"Penguins.raw", 512, 512);
 
-	glFlush(); // Flushes the scene drawn to the graphics card
-	glutSwapBuffers();
+
+	for (int i = 0; i < 200; i++)
+	{
+		objects.push_back(new Pyramid(pyramidMesh, texture, ((rand() % 400) / 10.0f) - 20.0f, ((rand() % 200) / 10.0f) - 10.0f, -(rand() % 1000) / 10.0f));
+
+	}
+
+	srand(time(NULL) + 50);
+
+	for (int i = 0; i < 200; i++)
+	{
+		objects.push_back(new Cube(cubeMesh, texture, ((rand() % 400) / 10.0f) - 20.0f, ((rand() % 200) / 10.0f) - 10.0f, -(rand() % 1000) / 10.0f));
+	}
+
 }
 
 void MooGL::Update()
 {
 	glLoadIdentity();
 	gluLookAt(camera->eye.x, camera->eye.y, camera->eye.z, camera->center.x, camera->center.y, camera->center.z, camera->up.x, camera->up.y, camera->up.z);
+	
+	for (SceneObject* n : objects)
+		n->Update();
 
 	glutPostRedisplay();
-
-	// Constant rotation
-	//rotation += 0.5f;
-
-	for (int i = 0; i < 200; i++)
-	{
-		cube[i]->Update();
-	}
-
-	if (rotation >= 360.0f)
-	{
-		rotation = 0.0f;
-	}
 }
 
 void MooGL::Keyboard(unsigned char key, int x, int y)
 {
-	// If the D key is pressed
-	if (key == 'd')
+	switch (key)
 	{
-		rotation += 1.0f;
-	}
-	// If the A key is pressed
-	if (key == 'a')
-	{
-		rotation -= 1.0f;
-	}
-	// If the W key is pressed
-	if (key == 'w')
-	{
-		camera->eye.z -= 1.0f;
-	}
-	// If the S key is pressed
-	if (key == 's')
-	{
-		camera->eye.z += 1.0f;
+		case 'w': {
+			camera->eye.y--;
+			break;
+		}
+
+		case 'a': {
+			camera->eye.x++;
+			break;
+		}
+
+		case 's': {
+			camera->eye.y++;
+			break;
+		}
+
+		case 'd': {
+			camera->eye.x--;
+			break;
+		}
 	}
 }
 
-int main(int argc, char* argv[])
+void MooGL::Display()
 {
-	// Creates an instance of our game
-	MooGL* moo = new MooGL(argc, argv);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	for (SceneObject* n : objects)
+	{
+		glPushMatrix();
+			n->Draw();
+		glPopMatrix();
+	}
+	glFlush();
+	glutSwapBuffers();
+}
 
-	// Assumes a successful exit if our game exits
-	return 0;
+MooGL::~MooGL(void)
+{
+
 }
