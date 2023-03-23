@@ -1,30 +1,59 @@
 #pragma once
-#include "GLUTCallbacks.h" //GLUTCallbacks
+
+#include <Windows.h>
+#include <gl/GL.h>
+#include <gl/GLU.h>
+
+#include "GL\freeglut.h"
+#include "GLUTCallbacks.h"
+
+#ifndef _Texture2D
+#include "Texture2D.h"
+#endif
+
+#ifndef _Cube
 #include "Cube.h"
-#include "Pyramid.h"
-#include "MeshLoader.h" // MeshLoader class
+#endif
 
-// Refresh rate pre-processor
+#ifndef _Pyramid
+#include "pyramid.h"
+#endif
+
+#ifndef _MeshLoader
+#include "MeshLoader.h"
+#endif
+
+#ifndef _SceneObject
+#include "SceneObject.h"
+#endif
+
+#ifndef _hStructs
+#include "Structures.h"
+#endif
+
+#include <vector>
+
 #define REFRESHRATE 16
-
 
 class MooGL
 {
 	public:
+
 		MooGL(int argc, char* argv[]);
+
+		void Display();
+		void Update();
+
+		void Keyboard(unsigned char key, int x, int y);
+
+		~MooGL(void);
 
 		void InitObjects();
 		void InitGL(int argc, char* argv[]);
 
-		~MooGL(void);
-
-		void Display();
-		void Update();
-		void Keyboard(unsigned char key, int x, int y);
-
 	private:
 		float rotation;
-
 		Camera* camera;
-		SceneObject* objects[1000];
+		std::vector<SceneObject*> objects;
+
 };

@@ -1,24 +1,44 @@
 #pragma once
-//#include <Windows.h>
-//#include <gl/GL.h>
-//#include <gl/GLU.h>
-//#include "GL\freeglut.h"
-#include "Structures.h"
-#include "SceneObject.h"
 
-class Cube : public SceneObject
-{
+#ifndef _Cube
+ 
+#define _Cube
+
+	#include <Windows.h>
+	#include <gl/GL.h>
+	#include <gl/GLU.h>
+	#include <iostream>
+	#include <fstream>
+	#include <string>
+	#include <regex>
+	#include "GL\freeglut.h"
+
+	#ifndef _SceneObject
+	#include "SceneObject.h"
+	#endif
+
+	#ifndef _hStructs
+	#include "Structures.h"
+	#endif
+
+	#ifndef _Texture2D
+	#include "Texture2D.h"
+	#endif
+
+	class Cube : public SceneObject
+	{
+	private:
+		Texture2D* _texture;
+		GLfloat _rotation = 0;
+		Vector3 _position;
+
 	public:
-		Cube(Mesh* mesh, float x, float y, float z);
+
+		Cube(Mesh* mesh, Texture2D* _texture, float x, float y, float z);
 		~Cube();
 
 		void Draw();
 		void Update();
+	};
 
-	private:
-
-		static int numVertices, numColors, numIndices;
-
-		GLfloat rotation = 0.0f;
-		Vector3 position;
-};
+#endif // !_Cube

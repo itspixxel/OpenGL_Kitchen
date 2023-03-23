@@ -2,17 +2,20 @@
 
 SceneObject::SceneObject(Mesh* mesh)
 {
-	m_mesh = mesh;
+	_mesh = mesh;
 }
 
 SceneObject::~SceneObject()
 {
+
 }
 
-void SceneObject::Update()
+void SceneObject::Update() 
 {
+
 }
 
-void SceneObject::Draw()
+void SceneObject::Draw() 
 {
+
 }
