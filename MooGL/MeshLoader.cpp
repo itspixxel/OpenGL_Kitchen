@@ -29,19 +29,19 @@ namespace MeshLoader
 		}
 	}
 
-	void LoadColors(ifstream& inFile, Mesh& mesh)
+	void LoadNormals(ifstream& inFile, Mesh& mesh)
 	{
-		inFile >> mesh.numColors;
+		inFile >> mesh.numNormals;
 
-		if (mesh.numColors > 0)
+		if (mesh.numNormals > 0)
 		{
-			mesh.indexedColors = new Color[mesh.numColors];
+			mesh.indexedNormals = new Vector3[mesh.numNormals];
 
-			for (int i = 0; i < mesh.numColors; i++)
+			for (int i = 0; i < mesh.numNormals; i++)
 			{
-				inFile >> mesh.indexedColors[i].r;
-				inFile >> mesh.indexedColors[i].g;
-				inFile >> mesh.indexedColors[i].b;
+				inFile >> mesh.indexedNormals[i].x;
+				inFile >> mesh.indexedNormals[i].y;
+				inFile >> mesh.indexedNormals[i].z;
 			}
 		}
 	}
@@ -52,12 +52,12 @@ namespace MeshLoader
 
 		if (mesh.numTexCoords > 0)
 		{
-			mesh.TexCoords = new TexCoord[mesh.numTexCoords];
+			mesh.texCoords = new TexCoord[mesh.numTexCoords];
 
 			for (int i = 0; i < mesh.numTexCoords; i++)
 			{
-				inFile >> mesh.TexCoords[i].u;
-				inFile >> mesh.TexCoords[i].v;
+				inFile >> mesh.texCoords[i].u;
+				inFile >> mesh.texCoords[i].v;
 			}
 		}
 	}
@@ -94,8 +94,8 @@ namespace MeshLoader
 
 		//LOAD DATA USING METHODS ABOVE
 		LoadVertices(inFile, *mesh);
-		LoadColors(inFile, *mesh);
 		LoadUVs(inFile, *mesh);
+		LoadNormals(inFile, *mesh);
 		LoadIndices(inFile, *mesh);
 
 

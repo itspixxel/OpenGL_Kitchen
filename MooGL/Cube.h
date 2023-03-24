@@ -29,6 +29,7 @@
 	{
 	private:
 		Texture2D* _texture;
+		Material* _material;
 		GLfloat _rotation = 0;
 		Vector3 _position;
 

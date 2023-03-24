@@ -19,6 +19,4 @@
 		Mesh* Load(char* path);
 	};
 
-
-
 #endif // !_MeshLoader

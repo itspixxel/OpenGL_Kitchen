@@ -12,9 +12,9 @@ MooGL::MooGL(int argc, char* argv[])
 	srand(time(NULL));
 	InitGL(argc, argv);
 	InitObjects();
+	InitLighting();
 
 	glutMainLoop();
-
 }
 
 void MooGL::InitGL(int argc, char* argv[])
@@ -26,7 +26,7 @@ void MooGL::InitGL(int argc, char* argv[])
 	glutInitDisplayMode(GLUT_DOUBLE);
 	glutInitWindowSize(800, 800);
 	glutInitWindowPosition(100, 100);
-	glutCreateWindow("Simple OpenGL Program");
+	glutCreateWindow("MooGL");
 
 	glutDisplayFunc(GLUTCallbacks::Display);
 	glutKeyboardFunc(GLUTCallbacks::Keyboard);
@@ -36,48 +36,60 @@ void MooGL::InitGL(int argc, char* argv[])
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	glViewport(0, 0, 800, 800);
-	gluPerspective(45, 1, 0, 1000);
+	gluPerspective(45, 1, 1, 1000);
 
 	glEnable(GL_TEXTURE_2D);
+	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
+	glEnable(GL_LIGHTING);
+	glEnable(GL_LIGHT0);
+	glEnable(GLUT_MULTISAMPLE);
+
 	glCullFace(GL_BACK);
 
-	glEnable(GL_DEPTH_TEST);
-	glDepthMask(GL_TRUE);
-	glDepthFunc(GL_LEQUAL);
-	glDepthRange(1, 0);
-
 	glMatrixMode(GL_MODELVIEW);
-
 }
 
 void MooGL::InitObjects()
 {
 	rotation = 0;
 	camera = new Camera();
-	camera->eye.z = 5.0f; camera->up.y = 1.0f;
+	camera->eye.z = -5.0f; camera->up.y = 1.0f;
 	//camera->eye.x = 5.0f; camera->eye.y = 5.0f; camera->eye.z = -5.0f;
 
 	Mesh* cubeMesh = MeshLoader::Load((char *)"cube.txt");
-	Mesh* pyramidMesh = MeshLoader::Load((char*)"pyramid.txt");
 
 	Texture2D* texture = new Texture2D();
 	texture->Load((char*)"Penguins.raw", 512, 512);
 
-
-	for (int i = 0; i < 200; i++)
+	for (int i = 0; i < 500; i++)
 	{
-		objects.push_back(new Pyramid(pyramidMesh, texture, ((rand() % 400) / 10.0f) - 20.0f, ((rand() % 200) / 10.0f) - 10.0f, -(rand() % 1000) / 10.0f));
-
+		objects.push_back(new Cube(cubeMesh, texture, ((rand() % 600) / 10.0f) - 20.0f, ((rand() % 400) / 10.0f) - 10.0f, -(rand() % 2000) / 10.0f));
 	}
 
-	srand(time(NULL) + 50);
+}
 
-	for (int i = 0; i < 200; i++)
-	{
-		objects.push_back(new Cube(cubeMesh, texture, ((rand() % 400) / 10.0f) - 20.0f, ((rand() % 200) / 10.0f) - 10.0f, -(rand() % 1000) / 10.0f));
-	}
+void MooGL::InitLighting()
+{
+	_lightPosition = new Vector4();
+	_lightPosition->x = 0.0;
+	_lightPosition->y = 0.0;
+	_lightPosition->z = 1.0;
+	_lightPosition->w = 0.0;
 
+	_lightData = new Lighting();
+	_lightData->ambient.x = 0.2;
+	_lightData->ambient.y = 0.2;
+	_lightData->ambient.z = 0.2;
+	_lightData->ambient.w = 1.0;
+	_lightData->diffuse.x = 0.8;
+	_lightData->diffuse.y = 0.8;
+	_lightData->diffuse.z = 0.8;
+	_lightData->diffuse.w = 1.0;
+	_lightData->specular.x = 0.2;
+	_lightData->specular.y = 0.2;
+	_lightData->specular.z = 0.2;
+	_lightData->specular.w = 1.0;
 }
 
 void MooGL::Update()
@@ -96,7 +108,7 @@ void MooGL::Keyboard(unsigned char key, int x, int y)
 	switch (key)
 	{
 		case 'w': {
-			camera->eye.y--;
+			camera->eye.z--;
 			break;
 		}
 
@@ -106,7 +118,7 @@ void MooGL::Keyboard(unsigned char key, int x, int y)
 		}
 
 		case 's': {
-			camera->eye.y++;
+			camera->eye.z++;
 			break;
 		}
 
@@ -119,7 +131,8 @@ void MooGL::Keyboard(unsigned char key, int x, int y)
 
 void MooGL::Display()
 {
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glClearColor(0.094f, 0.094f, 0.094f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); //this clears the scene
 	for (SceneObject* n : objects)
 	{
 		glPushMatrix();
