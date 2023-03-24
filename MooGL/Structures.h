@@ -8,10 +8,12 @@
 	struct Vector3
 	{
 		float x, y, z;
+	};
 
-		Vector3() : x(0), y(0), z(0) {}
+	struct Vector4
+	{
+		float x, y, z, w;
 
-		Vector3(float x, float y, float z) : x(x), y(y), z(z) {}
 	};
 
 	struct Camera
@@ -37,11 +39,27 @@
 	struct Mesh
 	{
 		Vertex* indexedVertices;
-		Color* indexedColors;
+		//Color* indexedColors;
+		Vector3* indexedNormals;
 		GLushort* indices;
-		TexCoord* TexCoords;
-		int numVertices, numColors, numIndices, numTexCoords;
+		TexCoord* texCoords;
+		Vector3* normals;
+		int numVertices, numNormals, numIndices, numTexCoords;
 	};
 
+	struct Lighting
+	{
+		Vector4 ambient;
+		Vector4 diffuse;
+		Vector4 specular;
+	};
+
+	struct Material
+	{
+		Vector4 ambient;
+		Vector4 diffuse;
+		Vector4 specular;
+		GLfloat shininess;
+	};
 
 #endif // !_hStructs

@@ -15,20 +15,8 @@
 #include "Cube.h"
 #endif
 
-#ifndef _Pyramid
-#include "pyramid.h"
-#endif
-
 #ifndef _MeshLoader
 #include "MeshLoader.h"
-#endif
-
-#ifndef _SceneObject
-#include "SceneObject.h"
-#endif
-
-#ifndef _hStructs
-#include "Structures.h"
 #endif
 
 #include <vector>
@@ -49,9 +37,12 @@ class MooGL
 		~MooGL(void);
 
 		void InitObjects();
+		void InitLighting();
 		void InitGL(int argc, char* argv[]);
 
 	private:
+		Vector4* _lightPosition;
+		Lighting* _lightData;
 		float rotation;
 		Camera* camera;
 		std::vector<SceneObject*> objects;
