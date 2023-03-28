@@ -135,9 +135,7 @@ void MooGL::Display()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); //this clears the scene
 	for (SceneObject* n : objects)
 	{
-		glPushMatrix();
 			n->Draw();
-		glPopMatrix();
 	}
 	glFlush();
 	glutSwapBuffers();
