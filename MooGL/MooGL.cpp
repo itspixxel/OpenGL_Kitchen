@@ -64,7 +64,7 @@ void MooGL::InitObjects()
 
 	for (int i = 0; i < 500; i++)
 	{
-		objects.push_back(new Cube(cubeMesh, texture, ((rand() % 600) / 10.0f) - 20.0f, ((rand() % 400) / 10.0f) - 10.0f, -(rand() % 2000) / 10.0f));
+		objects.push_back(new Cube(cubeMesh, texture, ((rand() % 600) / 10.0f) - 20.0f, ((rand() % 400) / 10.0f) - 10.0f, (rand() % 2000) / 10.0f));
 	}
 
 }
@@ -135,7 +135,9 @@ void MooGL::Display()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); //this clears the scene
 	for (SceneObject* n : objects)
 	{
+		glPushMatrix();
 			n->Draw();
+		glPopMatrix();
 	}
 	glFlush();
 	glutSwapBuffers();

@@ -22,7 +22,7 @@ Cube::Cube(Mesh* mesh, Texture2D* texture, float x, float y, float z) : SceneObj
 void Cube::Update()
 {
 	//_rotation += 0.1f;
-	_position.z += 0.05f;
+	_position.z -= 0.05f;
 }
 
 void Cube::Draw()
@@ -32,27 +32,29 @@ void Cube::Draw()
 	{
 		glBindTexture(GL_TEXTURE_2D, _texture->GetID());
 		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-		glEnableClientState(GL_NORMAL_ARRAY);
-		glEnableClientState(GL_VERTEX_ARRAY);
 
+		glScalef(1, 1, 1);
+		glTranslatef(_position.x, _position.y, _position.z);
+		glRotatef(_rotation, 0.0f, 1.0f, 0.0f);
 
+		glEnable(GL_NORMAL_ARRAY);
 		glNormalPointer(GL_FLOAT, 0, _mesh->indexedNormals);
+
+		glEnableClientState(GL_VERTEX_ARRAY);
 		glVertexPointer(3, GL_FLOAT, 0, _mesh->indexedVertices);
-		glTexCoordPointer(2, GL_FLOAT, 0, _mesh->texCoords);
 
 		glMaterialfv(GL_FRONT, GL_AMBIENT, &(_material->ambient.x));
 		glMaterialf(GL_FRONT, GL_SHININESS, _material->shininess);
 
+		glTexCoordPointer(2, GL_FLOAT, 0, _mesh->texCoords);
 		glPushMatrix();
-			glScalef(1, 1, 1);
-			glTranslatef(_position.x, _position.y, _position.z);
-			glRotatef(_rotation, 0.0f, 1.0f, 0.0f);
-			glDrawElements(GL_TRIANGLES, _mesh->numIndices, GL_UNSIGNED_SHORT, _mesh->indices);
+		glDrawElements(GL_TRIANGLES, _mesh->numIndices, GL_UNSIGNED_SHORT, _mesh->indices);
 		glPopMatrix();
 
-		glDisableClientState(GL_VERTEX_ARRAY);
-		glDisableClientState(GL_COLOR_ARRAY);
 		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+		glDisableClientState(GL_COLOR_ARRAY);
+		glDisableClientState(GL_VERTEX_ARRAY);
+		glTranslatef(0, 0, 0);
 	}
 }
 
