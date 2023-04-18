@@ -26,7 +26,7 @@ void OBJObject::Draw()
 
 		glPushMatrix();
 		glTranslatef(_position.x, _position.y, _position.z);
-		glRotatef(_rotation, 1, 1, 1);
+		glRotatef(_rotation, 0, 1, 0);
 
 		glBegin(GL_TRIANGLES);
 		for (int i = 0; i < _objMesh->indices.size(); i++)
