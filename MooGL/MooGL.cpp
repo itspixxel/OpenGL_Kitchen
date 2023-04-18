@@ -58,13 +58,18 @@ void MooGL::InitObjects()
 	camera->eye.x = 5.0f; camera->eye.y = 5.0f; camera->eye.z = -5.0f;
 
 	Mesh* cubeMesh = MeshLoader::Load((char *)"cube.txt");
-	Mesh* monkeMesh = MeshLoader::LoadOBJ((char*)"monke.obj");
+	OBJMesh* monkeMesh = OBJLoader::LoadOBJ((char*)"objects/monke.obj");
 
 	Texture2D* texture = new Texture2D();
 	texture->Load((char*)"crate.bmp", 512, 512);
+	Texture2D* monkeTexture = new Texture2D();
+	monkeTexture->Load((char*)"Monke.bmp", 512, 512);
 
 	objects.push_back(new Cube(cubeMesh, texture, 0.0f, 0.0f, 0.0f));
-	objects.push_back(new Cube(monkeMesh, texture, 0.0f, 0.0f, 10.0f));
+	for (int i = 0; i < 200; i++)
+	{
+		objects.push_back(new OBJObject(monkeMesh, monkeTexture, ((rand() % 600) / 10.0f) - 20.0f, ((rand() % 400) / 10.0f) - 10.0f, -(rand() % 2000) / 10.0f));
+	}
 }
 
 void MooGL::InitLighting()

@@ -15,8 +15,16 @@
 #include "Cube.h"
 #endif
 
+#ifndef _OBJObject
+#include "OBJObject.h"
+#endif
+
 #ifndef _MeshLoader
 #include "MeshLoader.h"
+#endif
+
+#ifndef _OBJLoader
+#include "OBJLoader.h"
 #endif
 
 #include <vector>

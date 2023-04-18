@@ -1,8 +1,7 @@
 #pragma once
 
-#ifndef _Cube
- 
-#define _Cube
+#ifndef _OBJObject
+#define _OBJObject
 
 #include <Windows.h>
 #include <gl/GL.h>
@@ -25,7 +24,7 @@
 #include "Texture2D.h"
 #endif
 
-class Cube : public SceneObject
+class OBJObject : public SceneObject
 {
 	private:
 		Material* _material;
@@ -34,11 +33,11 @@ class Cube : public SceneObject
 
 	public:
 
-		Cube(Mesh* mesh, Texture2D* _texture, float x, float y, float z);
-		~Cube();
+		OBJObject(OBJMesh* objMesh, Texture2D* _texture, float x, float y, float z);
+		~OBJObject();
 
-		void Draw();
 		void Update();
+		void Draw();
 };
 
-#endif // !_Cube
+#endif //!_OBJObject

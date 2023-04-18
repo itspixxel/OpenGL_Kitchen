@@ -1,7 +1,7 @@
 #pragma once
 
-#ifndef _MeshLoader
-#define _MeshLoader
+#ifndef _OBJLoader
+#define _OBJLoader
 
 #include <iostream>
 #include <fstream>
@@ -14,9 +14,9 @@
 #include "Structures.h"
 #endif
 
-namespace MeshLoader
+namespace OBJLoader
 {
-	Mesh* Load(char* path);
+	OBJMesh* LoadOBJ(char* path);
 };
 
-#endif // !_MeshLoader
+#endif //!_OBJLoader

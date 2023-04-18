@@ -1,6 +1,7 @@
 #pragma once
 
 #include "GL\freeglut.h"
+#include <vector>
 
 #ifndef _hStructs
 #define _hStructs
@@ -35,6 +36,12 @@
 	{
 		GLfloat u, v;
 	};
+	struct Face
+	{
+		GLint vertexIndex;
+		GLint texCoordIndex;
+		GLint normalIndex;
+	};
 
 	struct Mesh
 	{
@@ -43,6 +50,15 @@
 		GLushort* indices;
 		TexCoord* texCoords;
 		int numVertices, numNormals, numIndices, numTexCoords;
+	};
+
+	struct OBJMesh
+	{
+		std::vector<Vertex>vertices;
+		std::vector<Vector3>normals;
+		std::vector<TexCoord>texCoords;
+
+		std::vector<Face> indices;
 	};
 
 	struct Lighting

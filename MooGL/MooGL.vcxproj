@@ -143,6 +143,8 @@
     <ClCompile Include="GLUTCallbacks.cpp" />
     <ClCompile Include="MooGL.cpp" />
     <ClCompile Include="MeshLoader.cpp" />
+    <ClCompile Include="OBJLoader.cpp" />
+    <ClCompile Include="OBJObject.cpp" />
     <ClCompile Include="SceneObject.cpp" />
     <ClCompile Include="Texture2D.cpp" />
   </ItemGroup>
@@ -151,6 +153,8 @@
     <ClInclude Include="GLUTCallbacks.h" />
     <ClInclude Include="MooGL.h" />
     <ClInclude Include="MeshLoader.h" />
+    <ClInclude Include="OBJLoader.h" />
+    <ClInclude Include="OBJObject.h" />
     <ClInclude Include="SceneObject.h" />
     <ClInclude Include="Structures.h" />
     <ClInclude Include="Texture2D.h" />
