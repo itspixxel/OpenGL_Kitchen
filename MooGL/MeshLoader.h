@@ -17,6 +17,7 @@
 	namespace MeshLoader
 	{
 		Mesh* Load(char* path);
+		Mesh* LoadOBJ(char* path);
 	};
 
 #endif // !_MeshLoader

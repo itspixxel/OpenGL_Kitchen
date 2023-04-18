@@ -58,19 +58,21 @@ void MooGL::InitObjects()
 	camera->eye.x = 5.0f; camera->eye.y = 5.0f; camera->eye.z = -5.0f;
 
 	Mesh* cubeMesh = MeshLoader::Load((char *)"cube.txt");
+	Mesh* monkeMesh = MeshLoader::LoadOBJ((char*)"monke.obj");
 
 	Texture2D* texture = new Texture2D();
 	texture->Load((char*)"crate.bmp", 512, 512);
 
 	objects.push_back(new Cube(cubeMesh, texture, 0.0f, 0.0f, 0.0f));
+	objects.push_back(new Cube(monkeMesh, texture, 0.0f, 0.0f, 10.0f));
 }
 
 void MooGL::InitLighting()
 {
 	_lightPosition = new Vector4();
 	_lightPosition->x = 0.0;
-	_lightPosition->y = 0.0;
-	_lightPosition->z = 1.0;
+	_lightPosition->y = 1.0;
+	_lightPosition->z = -0.5;
 	_lightPosition->w = 0.0;
 
 	_lightData = new Lighting();
@@ -93,10 +95,9 @@ void MooGL::Update()
 	glLoadIdentity();
 	gluLookAt(camera->eye.x, camera->eye.y, camera->eye.z, camera->center.x, camera->center.y, camera->center.z, camera->up.x, camera->up.y, camera->up.z);
 	
-	/*glLightfv(GL_LIGHT0, GL_AMBIENT, &(_lightData->ambient.x));
+	glLightfv(GL_LIGHT0, GL_AMBIENT, &(_lightData->ambient.x));
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, &(_lightData->diffuse.x));
-	glLightfv(GL_LIGHT0, GL_SPECULAR, &(_lightData->specular.x));*/
-
+	glLightfv(GL_LIGHT0, GL_SPECULAR, &(_lightData->specular.x));
 	glLightfv(GL_LIGHT0, GL_POSITION, &(_lightPosition->x));
 
 	for (SceneObject* n : objects)
@@ -135,12 +136,14 @@ void MooGL::Display()
 {
 	glClearColor(0.094f, 0.094f, 0.094f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); //this clears the scene
+
 	for (SceneObject* n : objects)
 	{
 		glPushMatrix();
 			n->Draw();
 		glPopMatrix();
 	}
+
 	glFlush();
 	glutSwapBuffers();
 }
