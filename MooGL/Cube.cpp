@@ -4,7 +4,6 @@ using namespace std;
 
 Cube::Cube(Mesh* mesh, Texture2D* texture, float x, float y, float z) : SceneObject(mesh)
 {
-
 	_position.x = x;
 	_position.y = y;
 	_position.z = z;
@@ -16,13 +15,12 @@ Cube::Cube(Mesh* mesh, Texture2D* texture, float x, float y, float z) : SceneObj
 	_material->diffuse.x = 0.8; _material->diffuse.y = 0.05; _material->diffuse.z = 0.05; _material->diffuse.w = 1.0;
 	_material->specular.x = 1.0; _material->specular.y = 1.0; _material->specular.z = 1.0; _material->specular.w = 1.0;
 	_material->shininess = 100.0f;
-
 }
 
 void Cube::Update()
 {
-	//_rotation += 0.1f;
-	_position.z -= 0.05f;
+	_rotation += 0.1f;
+	//_position.z -= 0.05f;
 }
 
 void Cube::Draw()

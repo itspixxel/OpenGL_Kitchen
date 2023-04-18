@@ -36,7 +36,6 @@ bool Texture2D::Load(char* path, int width, int height)
 	glBindTexture(GL_TEXTURE_2D, _ID);
 	gluBuild2DMipmaps(GL_TEXTURE_2D, 3, width, height, GL_RGB, GL_UNSIGNED_BYTE, tempTextureData);
 
-
 	delete[] tempTextureData;
 	return true;
 }
