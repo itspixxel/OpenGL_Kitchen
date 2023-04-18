@@ -14,7 +14,8 @@ Texture2D::~Texture2D()
 
 bool Texture2D::Load(char* path, int width, int height)
 {
-	char* tempTextureData; int fileSize; ifstream inFile;
+    // ========== RAW LOADER ==========
+	/*char* tempTextureData; int fileSize; ifstream inFile;
 	_width = width; _height = height;
 	inFile.open(path, ios::binary);
 
@@ -37,5 +38,34 @@ bool Texture2D::Load(char* path, int width, int height)
 	gluBuild2DMipmaps(GL_TEXTURE_2D, 3, width, height, GL_RGB, GL_UNSIGNED_BYTE, tempTextureData);
 
 	delete[] tempTextureData;
-	return true;
+	return true;*/
+
+    // ========== BMP LOADER ==========
+    // Open the file 
+    ifstream inFile(path, ios::binary);
+    if (!inFile.good())
+    {
+        cerr << "Can't open texture file " << path << endl;
+        return false;
+    }
+
+    // Allocate a buffer to hold the file data
+    inFile.seekg(0, ios::end);
+    int fileSize = (int)inFile.tellg();
+    char* tempTextureData = new char[fileSize];
+    inFile.seekg(0, ios::beg);
+    inFile.read(tempTextureData, fileSize);
+    inFile.close();
+
+    // Generate and bind the OpenGL texture
+    glGenTextures(1, &_ID);
+    glBindTexture(GL_TEXTURE_2D, _ID);
+
+    // Build the texture
+    gluBuild2DMipmaps(GL_TEXTURE_2D, 3, width, height, GL_RGB, GL_UNSIGNED_BYTE, tempTextureData);
+
+    // Clean up the temporary buffer
+    delete[] tempTextureData;
+
+    return true;   
 }

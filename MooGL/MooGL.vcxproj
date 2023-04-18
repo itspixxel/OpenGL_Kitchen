@@ -139,7 +139,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="BMPLoader.cpp" />
     <ClCompile Include="Cube.cpp" />
     <ClCompile Include="GLUTCallbacks.cpp" />
     <ClCompile Include="MooGL.cpp" />
@@ -148,7 +147,6 @@
     <ClCompile Include="Texture2D.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="BMPLoader.h" />
     <ClInclude Include="Cube.h" />
     <ClInclude Include="GLUTCallbacks.h" />
     <ClInclude Include="MooGL.h" />

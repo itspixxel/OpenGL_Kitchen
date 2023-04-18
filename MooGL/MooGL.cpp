@@ -60,7 +60,7 @@ void MooGL::InitObjects()
 	Mesh* cubeMesh = MeshLoader::Load((char *)"cube.txt");
 
 	Texture2D* texture = new Texture2D();
-	texture->Load((char*)"Penguins.raw", 512, 512);
+	texture->Load((char*)"crate.bmp", 512, 512);
 
 	objects.push_back(new Cube(cubeMesh, texture, 0.0f, 0.0f, 0.0f));
 }
