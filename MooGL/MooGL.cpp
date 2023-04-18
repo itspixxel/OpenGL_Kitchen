@@ -55,18 +55,14 @@ void MooGL::InitObjects()
 	rotation = 0;
 	camera = new Camera();
 	camera->eye.z = -5.0f; camera->up.y = 1.0f;
-	//camera->eye.x = 5.0f; camera->eye.y = 5.0f; camera->eye.z = -5.0f;
+	camera->eye.x = 5.0f; camera->eye.y = 5.0f; camera->eye.z = -5.0f;
 
 	Mesh* cubeMesh = MeshLoader::Load((char *)"cube.txt");
 
 	Texture2D* texture = new Texture2D();
-	texture->Load((char*)"Penguins.raw", 512, 512);
+	texture->Load((char*)"crate.bmp", 512, 512);
 
-	for (int i = 0; i < 500; i++)
-	{
-		objects.push_back(new Cube(cubeMesh, texture, ((rand() % 600) / 10.0f) - 20.0f, ((rand() % 400) / 10.0f) - 10.0f, -(rand() % 2000) / 10.0f));
-	}
-
+	objects.push_back(new Cube(cubeMesh, texture, 0.0f, 0.0f, 0.0f));
 }
 
 void MooGL::InitLighting()
@@ -97,6 +93,12 @@ void MooGL::Update()
 	glLoadIdentity();
 	gluLookAt(camera->eye.x, camera->eye.y, camera->eye.z, camera->center.x, camera->center.y, camera->center.z, camera->up.x, camera->up.y, camera->up.z);
 	
+	/*glLightfv(GL_LIGHT0, GL_AMBIENT, &(_lightData->ambient.x));
+	glLightfv(GL_LIGHT0, GL_DIFFUSE, &(_lightData->diffuse.x));
+	glLightfv(GL_LIGHT0, GL_SPECULAR, &(_lightData->specular.x));*/
+
+	glLightfv(GL_LIGHT0, GL_POSITION, &(_lightPosition->x));
+
 	for (SceneObject* n : objects)
 		n->Update();
 

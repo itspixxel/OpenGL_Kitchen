@@ -39,11 +39,9 @@
 	struct Mesh
 	{
 		Vertex* indexedVertices;
-		//Color* indexedColors;
 		Vector3* indexedNormals;
 		GLushort* indices;
 		TexCoord* texCoords;
-		Vector3* normals;
 		int numVertices, numNormals, numIndices, numTexCoords;
 	};
 
