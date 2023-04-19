@@ -7,19 +7,25 @@
 #include "Structures.h"
 #endif
 
-	class SceneObject
-	{
+#ifndef _texture2D.h
+#include "Texture2D.h"
+#endif
+
+class SceneObject
+{
 	protected:
 		Mesh* _mesh;
+		OBJMesh* _objMesh;
+		Texture2D* _texture;
 
 	public:
-		SceneObject(Mesh* mesh);
+		SceneObject(Mesh* mesh, Texture2D* texture);
+		SceneObject(OBJMesh* mesh, Texture2D* texture);
 		virtual ~SceneObject();
 
 		virtual void Update();
 		virtual void Draw();
-
-	};
+};
 
 
 #endif // !_SceneObject

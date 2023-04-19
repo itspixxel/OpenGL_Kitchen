@@ -1,5 +1,6 @@
 #include <iostream>
 #include <fstream>
+#include <sstream>
 
 #include "MeshLoader.h"
 
@@ -97,7 +98,6 @@ namespace MeshLoader
 		LoadUVs(inFile, *mesh);
 		LoadNormals(inFile, *mesh);
 		LoadIndices(inFile, *mesh);
-
 
 		return mesh;
 	}

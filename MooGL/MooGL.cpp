@@ -1,4 +1,5 @@
 #include "MooGL.h"
+#define MAXOBJECTS 2
 
 int main(int argc, char* argv[])
 {
@@ -36,7 +37,7 @@ void MooGL::InitGL(int argc, char* argv[])
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	glViewport(0, 0, 800, 800);
-	gluPerspective(45, 1, 1, 1000);
+	gluPerspective(30, 1, 0.01, 1000);
 
 	glEnable(GL_TEXTURE_2D);
 	glEnable(GL_DEPTH_TEST);
@@ -55,22 +56,36 @@ void MooGL::InitObjects()
 	rotation = 0;
 	camera = new Camera();
 	camera->eye.z = -5.0f; camera->up.y = 1.0f;
-	camera->eye.x = 5.0f; camera->eye.y = 5.0f; camera->eye.z = -5.0f;
+	camera->eye.x = 0.0f; camera->eye.y = 0.0f; camera->eye.z = 9.0f;
 
 	Mesh* cubeMesh = MeshLoader::Load((char *)"cube.txt");
+	OBJMesh* monkeMesh = OBJLoader::LoadOBJ((char*)"objects/monke.obj");
+	OBJMesh* knotMesh = OBJLoader::LoadOBJ((char*)"objects/knot.obj");
 
 	Texture2D* texture = new Texture2D();
 	texture->Load((char*)"crate.bmp", 512, 512);
+	Texture2D* monkeTexture = new Texture2D();
+	monkeTexture->Load((char*)"Monke.bmp", 512, 512);
 
-	objects.push_back(new Cube(cubeMesh, texture, 0.0f, 0.0f, 0.0f));
+	//objects.push_back(new Cube(cubeMesh, texture, 0.0f, 0.0f, 0.0f));
+
+	objects["monkey"] = new OBJObject(monkeMesh, texture, 0.0f, 0.0f, 0.0f);;
+	objects["knot"] = new OBJObject(knotMesh, texture, 20.0f, 0.0f, 0.0f);;
+
+	//objects.push_back(new OBJObject(monkeMesh, texture, 0.0f, 0.0f, 0.0f));
+
+	/*for (int i = 0; i < 200; i++)
+	{
+		objects.push_back(new OBJObject(roomMesh, texture, ((rand() % 600) / 10.0f) - 20.0f, ((rand() % 400) / 10.0f) - 10.0f, -(rand() % 2000) / 10.0f));
+	}*/
 }
 
 void MooGL::InitLighting()
 {
 	_lightPosition = new Vector4();
 	_lightPosition->x = 0.0;
-	_lightPosition->y = 0.0;
-	_lightPosition->z = 1.0;
+	_lightPosition->y = 1.0;
+	_lightPosition->z = -0.5;
 	_lightPosition->w = 0.0;
 
 	_lightData = new Lighting();
@@ -91,41 +106,179 @@ void MooGL::InitLighting()
 void MooGL::Update()
 {
 	glLoadIdentity();
-	gluLookAt(camera->eye.x, camera->eye.y, camera->eye.z, camera->center.x, camera->center.y, camera->center.z, camera->up.x, camera->up.y, camera->up.z);
 	
-	/*glLightfv(GL_LIGHT0, GL_AMBIENT, &(_lightData->ambient.x));
+	switch (objectFocusID)
+	{
+		case 0:
+		{
+			if (objects.find("monkey") != objects.end())
+			{
+				camera->center = objects["monkey"]->GetPosition();
+				gluLookAt(
+					camera->eye.x, camera->eye.y, camera->eye.z,
+					camera->center.x, camera->center.y, camera->center.z,
+					camera->up.x, camera->up.y, camera->up.z);
+			}
+			else {
+				gluLookAt(
+					camera->eye.x, camera->eye.y, camera->eye.z,
+					camera->center.x, camera->center.y, camera->center.z,
+					camera->up.x, camera->up.y, camera->up.z);
+			}
+			break;
+		}
+		case 1:
+		{
+			if (objects.find("knot") != objects.end())
+			{
+				camera->center = objects["knot"]->GetPosition();
+				gluLookAt(
+					camera->eye.x, camera->eye.y, camera->eye.z,
+					camera->center.x, camera->center.y, camera->center.z,
+					camera->up.x, camera->up.y, camera->up.z);
+			}
+			else {
+				gluLookAt(
+					camera->eye.x, camera->eye.y, camera->eye.z,
+					camera->center.x, camera->center.y, camera->center.z,
+					camera->up.x, camera->up.y, camera->up.z);
+			}
+			break;
+		}
+		case 2:
+		{
+			gluLookAt(camera->eye.x, camera->eye.y, camera->eye.z, camera->center.x, camera->center.y, camera->center.z, camera->up.x, camera->up.y, camera->up.z);
+			break;
+		}
+		
+	}
+		
+	glLightfv(GL_LIGHT0, GL_AMBIENT, &(_lightData->ambient.x));
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, &(_lightData->diffuse.x));
-	glLightfv(GL_LIGHT0, GL_SPECULAR, &(_lightData->specular.x));*/
-
+	glLightfv(GL_LIGHT0, GL_SPECULAR, &(_lightData->specular.x));
 	glLightfv(GL_LIGHT0, GL_POSITION, &(_lightPosition->x));
 
-	for (SceneObject* n : objects)
-		n->Update();
+	for (std::map<std::string, OBJObject*>::const_iterator it = objects.begin(); it != objects.end(); ++it)
+	{
+		it->second->Update();
+	}
 
 	glutPostRedisplay();
 }
 
 void MooGL::Keyboard(unsigned char key, int x, int y)
 {
+	// Calculate the direction vector
+	Vector3 dir = camera->center - camera->eye;
+	dir.normalize();
+
 	switch (key)
 	{
-		case 'w': {
-			camera->eye.z--;
+		case 'w': 
+		{
+			// Move the camera forward
+			camera->eye = camera->eye + dir;
+
 			break;
 		}
 
-		case 'a': {
-			camera->eye.x++;
+		case 'a': 
+		{
+			Vector3 cross = dir.crossProduct(camera->up);
+			cross.normalize();
+			if (camera->eye.x - cross.x > camera->center.x - 20 && camera->eye.x - cross.x < camera->center.x + 20)
+			{
+				camera->eye.x = camera->eye.x - cross.x;
+			}
+			if (camera->eye.z - cross.z > camera->center.z - 10 && camera->eye.z - cross.z < camera->center.z + 10)
+			{
+				camera->eye.z = camera->eye.z - cross.z;
+			}
+
 			break;
 		}
 
-		case 's': {
-			camera->eye.z++;
+		case 's':
+		{
+			// Calculate the direction vector
+			Vector3 dir = camera->center - camera->eye;
+			dir.normalize();
+
+			// Move the camera forward
+			if (camera->eye.x - dir.x > camera->center.x - 20 && camera->eye.x - dir.x < 20 && camera->eye.z - dir.z > camera->center.z - 10 && camera->eye.z - dir.z < 10)
+			camera->eye = camera->eye - dir;
+
 			break;
 		}
 
-		case 'd': {
-			camera->eye.x--;
+		case 'd': 
+		{
+			Vector3 cross = dir.crossProduct(camera->up);
+			cross.normalize();
+			if (camera->eye.x + cross.x > camera->center.x - 20 && camera->eye.x + cross.x < camera->center.x + 20)
+			{
+				camera->eye.x = camera->eye.x + cross.x;
+			}
+			if (camera->eye.z + cross.z > camera->center.z - 10 && camera->eye.z + cross.z < camera->center.z + 10)
+			{
+				camera->eye.z = camera->eye.z + cross.z;
+			}
+			break;
+		}
+				
+		case 'i':
+		{
+			if (objectFocusID < MAXOBJECTS - 1)
+			{
+				++objectFocusID;
+			}
+			else
+			{
+				objectFocusID = 0;
+			}
+
+			switch (objectFocusID)
+			{
+				case 0:
+				{
+					camera->eye = Vector3(0, 0, 9);
+					break;
+				}
+				case 1:
+				{
+					camera->eye = Vector3(20, 0, 9);
+					break;
+				}
+			}
+
+			break;
+		}
+
+		case 'o':
+		{
+			if (objectFocusID > 0)
+			{
+				--objectFocusID;
+			}
+			else {
+				objectFocusID = MAXOBJECTS - 1;
+			}
+
+			switch (objectFocusID)
+			{
+				case 0:
+				{
+					camera->eye = Vector3(0, 0, 9);
+					break;
+				}
+				case 1:
+				{
+					camera->eye = Vector3(20, 0, 9);
+					break;
+				}
+			}
+
+
 			break;
 		}
 	}
@@ -135,12 +288,14 @@ void MooGL::Display()
 {
 	glClearColor(0.094f, 0.094f, 0.094f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); //this clears the scene
-	for (SceneObject* n : objects)
+
+	for (std::map<std::string, OBJObject*>::const_iterator it = objects.begin(); it != objects.end(); ++it)
 	{
 		glPushMatrix();
-			n->Draw();
+		it->second->Draw();
 		glPopMatrix();
 	}
+
 	glFlush();
 	glutSwapBuffers();
 }

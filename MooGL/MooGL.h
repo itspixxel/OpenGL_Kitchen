@@ -15,11 +15,20 @@
 #include "Cube.h"
 #endif
 
+#ifndef _OBJObject
+#include "OBJObject.h"
+#endif
+
 #ifndef _MeshLoader
 #include "MeshLoader.h"
 #endif
 
+#ifndef _OBJLoader
+#include "OBJLoader.h"
+#endif
+
 #include <vector>
+#include <map>
 
 #define REFRESHRATE 16
 
@@ -45,6 +54,7 @@ class MooGL
 		Lighting* _lightData;
 		float rotation;
 		Camera* camera;
-		std::vector<SceneObject*> objects;
+		std::map<std::string, OBJObject*> objects;
 
+		int objectFocusID = 0;
 };

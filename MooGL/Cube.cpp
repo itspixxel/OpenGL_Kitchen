@@ -2,7 +2,7 @@
 
 using namespace std;
 
-Cube::Cube(Mesh* mesh, Texture2D* texture, float x, float y, float z) : SceneObject(mesh)
+Cube::Cube(Mesh* mesh, Texture2D* texture, float x, float y, float z) : SceneObject(mesh, texture)
 {
 	_position.x = x;
 	_position.y = y;
@@ -19,7 +19,7 @@ Cube::Cube(Mesh* mesh, Texture2D* texture, float x, float y, float z) : SceneObj
 
 void Cube::Update()
 {
-	_rotation += 0.1f;
+	_rotation += 0.5f;
 	//_position.z -= 0.05f;
 }
 
