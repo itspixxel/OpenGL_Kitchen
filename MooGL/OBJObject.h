@@ -36,6 +36,10 @@ class OBJObject : public SceneObject
 		OBJObject(OBJMesh* objMesh, Texture2D* _texture, float x, float y, float z);
 		~OBJObject();
 
+		Vector3 GetPosition() { return _position; }
+		Vector3 SetPosition(Vector3 newPos) { _position = newPos; }
+		Vector3 SetPosition(float x, float y, float z) { _position = Vector3(x,y,z); }
+
 		void Update();
 		void Draw();
 };

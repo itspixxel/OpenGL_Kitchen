@@ -28,6 +28,7 @@
 #endif
 
 #include <vector>
+#include <map>
 
 #define REFRESHRATE 16
 
@@ -53,6 +54,7 @@ class MooGL
 		Lighting* _lightData;
 		float rotation;
 		Camera* camera;
-		std::vector<SceneObject*> objects;
+		std::map<std::string, OBJObject*> objects;
 
+		int objectFocusID = 0;
 };

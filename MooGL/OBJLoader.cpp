@@ -57,7 +57,7 @@ namespace OBJLoader
 			else if (prefix == "f") // assign indices
 			{
 				Face tempFace;
-				int tempInt;
+				int tempInt = 0;
 				int counter = 0;
 				while (ss >> tempInt)
 				{

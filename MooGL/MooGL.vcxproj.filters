@@ -69,4 +69,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <Object Include="objects\monke.obj">
+      <Filter>Resource Files</Filter>
+    </Object>
+    <Object Include="objects\knot.obj">
+      <Filter>Resource Files</Filter>
+    </Object>
+  </ItemGroup>
 </Project>

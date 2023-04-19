@@ -2,6 +2,7 @@
 
 #include "GL\freeglut.h"
 #include <vector>
+#include <math.h>
 
 #ifndef _hStructs
 #define _hStructs
@@ -9,6 +10,70 @@
 	struct Vector3
 	{
 		float x, y, z;
+
+		Vector3 operator+(const Vector3& other) const
+		{
+			return { x + other.x, y + other.y, z + other.z };
+		}
+
+		Vector3 operator-(const Vector3& other) const
+		{
+			return { x - other.x, y - other.y, z - other.z };
+		}
+
+		Vector3 operator*(float scalar) const
+		{
+			return { x * scalar, y * scalar, z * scalar };
+		}
+
+		Vector3 operator/(float scalar) const
+		{
+			return { x / scalar, y / scalar, z / scalar };
+		}
+
+		Vector3()
+		{
+			x = 0;
+			y = 0;
+			z = 0;
+		}
+
+		Vector3(float x, float y, float z)
+		{
+			this->x = x;
+			this->y = y;
+			this->z = z;
+		}
+
+		void normalize()
+		{
+			float mag = sqrt(x * x + y * y + z * z);
+
+			x = x / mag;
+			y = y / mag;
+			z = z / mag;
+		}
+
+		Vector3 normalize(bool returnValue)
+		{
+			float mag = sqrt(x * x + y * y + z * z);
+
+			float x = x / mag;
+			float y = y / mag;
+			float z = z / mag;
+			
+			return Vector3(x, y, z);
+		}
+
+		Vector3 crossProduct(Vector3 cross)
+		{
+			float x = (this->y * cross.z) - (this->z * cross.y);
+			float y = (this->z * cross.x) - (this->x * cross.z);
+			float z = (this->x * cross.y) - (this->y * cross.x);
+
+			return Vector3(x, y, z);
+		}
+
 	};
 
 	struct Vector4

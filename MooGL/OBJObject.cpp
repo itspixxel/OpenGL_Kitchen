@@ -15,7 +15,7 @@ OBJObject::~OBJObject()
 
 void OBJObject::Update()
 {
-	_rotation += 0.5f;
+	//_rotation += 0.5f;
 }
 
 void OBJObject::Draw()
