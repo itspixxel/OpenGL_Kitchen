@@ -26,4 +26,5 @@ To develop a coherent C++ application incorporating various 3D graphics techniqu
 <!-- If project has been improved after submission, here is a good place to specify it. -->
 
 <h2>Project status</h2>
-<img src="https://progress-bar.dev/64/?width=400">
+<img src="https://progress-bar.dev/69/?width=400">
+nice
