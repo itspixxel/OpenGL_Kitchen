@@ -55,6 +55,7 @@ class MooGL
 		float rotation;
 		Camera* camera;
 		std::map<std::string, OBJObject*> objects;
+		std::vector<SceneObject*> primitives;
 
 		int objectFocusID = 0;
 };

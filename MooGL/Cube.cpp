@@ -11,10 +11,10 @@ Cube::Cube(Mesh* mesh, Texture2D* texture, float x, float y, float z) : SceneObj
 	_texture = texture;
 
 	_material = new Material();
-	_material->ambient.x = 0.8; _material->ambient.y = 0.05; _material->ambient.z = 0.05; _material->ambient.w = 1.0;
+	_material->ambient.x = 0.05; _material->ambient.y = 0.2; _material->ambient.z = 0.6; _material->ambient.w = 1.0;
 	_material->diffuse.x = 0.8; _material->diffuse.y = 0.05; _material->diffuse.z = 0.05; _material->diffuse.w = 1.0;
-	_material->specular.x = 1.0; _material->specular.y = 1.0; _material->specular.z = 1.0; _material->specular.w = 1.0;
-	_material->shininess = 100.0f;
+	_material->specular.x = 1.0f; _material->specular.y = 1.0f; _material->specular.z = 1.0f; _material->specular.w = 1.0f;
+	_material->shininess = 1000.0f;
 }
 
 void Cube::Update()
@@ -33,7 +33,7 @@ void Cube::Draw()
 
 		glScalef(1, 1, 1);
 		glTranslatef(_position.x, _position.y, _position.z);
-		glRotatef(_rotation, 0.0f, 1.0f, 0.0f);
+		glRotatef(_rotation, 1.0f, 1.0f, 1.0f);
 
 		glEnable(GL_NORMAL_ARRAY);
 		glNormalPointer(GL_FLOAT, 0, _mesh->indexedNormals);
@@ -42,6 +42,8 @@ void Cube::Draw()
 		glVertexPointer(3, GL_FLOAT, 0, _mesh->indexedVertices);
 
 		glMaterialfv(GL_FRONT, GL_AMBIENT, &(_material->ambient.x));
+		glMaterialfv(GL_FRONT, GL_DIFFUSE, &(_material->ambient.x));
+		glMaterialfv(GL_FRONT, GL_SPECULAR, &(_material->specular.x));
 		glMaterialf(GL_FRONT, GL_SHININESS, _material->shininess);
 
 		glTexCoordPointer(2, GL_FLOAT, 0, _mesh->texCoords);
