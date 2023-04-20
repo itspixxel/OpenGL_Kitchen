@@ -176,8 +176,14 @@ void MooGL::Keyboard(unsigned char key, int x, int y)
 	{
 		case 'w': 
 		{
-			// Move the camera forward
+			// Calculate the direction vector
+			Vector3 dir = camera->center - camera->eye;
+			dir.normalize();
 			camera->eye = camera->eye + dir;
+
+			// Move the camera forward
+			//if (camera->eye.x - dir.x > camera->center.x - 25 && camera->eye.x - dir.x < 25 && camera->eye.z - dir.z > camera->center.z + 7 && //camera->eye.z - dir.z < 20)
+			//	camera->eye = camera->eye + dir;
 
 			break;
 		}
@@ -205,7 +211,7 @@ void MooGL::Keyboard(unsigned char key, int x, int y)
 			dir.normalize();
 
 			// Move the camera forward
-			if (camera->eye.x - dir.x > camera->center.x - 20 && camera->eye.x - dir.x < 20 && camera->eye.z - dir.z > camera->center.z - 10 && camera->eye.z - dir.z < 10)
+			if (camera->eye.x - dir.x > camera->center.x - 25 && camera->eye.x - dir.x < 25 && camera->eye.z - dir.z > camera->center.z - 15 && camera->eye.z - dir.z < 15)
 			camera->eye = camera->eye - dir;
 
 			break;
@@ -241,16 +247,28 @@ void MooGL::Keyboard(unsigned char key, int x, int y)
 			{
 				case 0:
 				{
-					camera->eye = Vector3(0, 0, 9);
+					camera->eye = Vector3(2.25f, 0, 9);
 					break;
 				}
 				case 1:
 				{
-					camera->eye = Vector3(20, 0, 9);
+					camera->eye = Vector3(22.5f, 0, 9);
 					break;
 				}
 			}
 
+			break;
+		}
+
+		case 'e':
+		{
+			camera->eye.y -= 0.1f;
+			break;
+		}
+		
+		case 'q':
+		{
+			camera->eye.y += 0.1f;
 			break;
 		}
 
