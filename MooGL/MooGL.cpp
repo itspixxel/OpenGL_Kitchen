@@ -1,5 +1,5 @@
 #include "MooGL.h"
-#define MAXOBJECTS 2
+#define MAXOBJECTS 3
 
 int main(int argc, char* argv[])
 {
@@ -56,12 +56,13 @@ void MooGL::InitObjects()
 	rotation = 0;
 	camera = new Camera();
 	camera->eye.z = -5.0f; camera->up.y = 1.0f;
-	camera->eye.x = 0.0f; camera->eye.y = 0.0f; camera->eye.z = 9.0f;
+	camera->eye.x = 2.5f; camera->eye.y = 0.0f; camera->eye.z = 9.0f;
 
 	// Load meshes
 	Mesh* cubeMesh = MeshLoader::Load((char*)"cube.txt");
 	OBJMesh* monkeMesh = OBJLoader::LoadOBJ((char*)"objects/monke.obj");
 	OBJMesh* knotMesh = OBJLoader::LoadOBJ((char*)"objects/knot.obj");
+	OBJMesh* teapotMesh = OBJLoader::LoadOBJ((char*)"objects/teapot.obj");
 
 	// Load textures
 	Texture2D* woodTexture = new Texture2D();
@@ -78,6 +79,7 @@ void MooGL::InitObjects()
 
 	objects["monkey"] = new OBJObject(monkeMesh, woodTexture, 0.0f, 0.0f, 0.0f);;
 	objects["knot"] = new OBJObject(knotMesh, grassTexture, 20.0f, 0.0f, 0.0f);;
+	objects["teapot"] = new OBJObject(teapotMesh, grassTexture, 40.0f, 0.0f, 0.0f);;
 
 
 	/*for (int i = 0; i < 200; i++)
@@ -89,15 +91,15 @@ void MooGL::InitObjects()
 void MooGL::InitLighting()
 {
 	_lightPosition = new Vector4();
-	_lightPosition->x = 0.0;
+	_lightPosition->x = 0.5;
 	_lightPosition->y = 1.0;
-	_lightPosition->z = -0.5;
+	_lightPosition->z = 0.5;
 	_lightPosition->w = 0.0;
 
 	_lightData = new Lighting();
-	_lightData->ambient.x = 0.2;
-	_lightData->ambient.y = 0.2;
-	_lightData->ambient.z = 0.2;
+	_lightData->ambient.x = 0.5;
+	_lightData->ambient.y = 0.5;
+	_lightData->ambient.z = 0.5;
 	_lightData->ambient.w = 1.0;
 	_lightData->diffuse.x = 0.8;
 	_lightData->diffuse.y = 0.8;
@@ -153,7 +155,20 @@ void MooGL::Update()
 		}
 		case 2:
 		{
-			gluLookAt(camera->eye.x, camera->eye.y, camera->eye.z, camera->center.x, camera->center.y, camera->center.z, camera->up.x, camera->up.y, camera->up.z);
+			if (objects.find("teapot") != objects.end())
+			{
+				camera->center = objects["teapot"]->GetPosition();
+				gluLookAt(
+					camera->eye.x, camera->eye.y, camera->eye.z,
+					camera->center.x, camera->center.y, camera->center.z,
+					camera->up.x, camera->up.y, camera->up.z);
+			}
+			else {
+				gluLookAt(
+					camera->eye.x, camera->eye.y, camera->eye.z,
+					camera->center.x, camera->center.y, camera->center.z,
+					camera->up.x, camera->up.y, camera->up.z);
+			}
 			break;
 		}
 		
@@ -258,12 +273,17 @@ void MooGL::Keyboard(unsigned char key, int x, int y)
 			{
 				case 0:
 				{
-					camera->eye = Vector3(2.25f, 0, 9);
+					camera->eye = Vector3(2.5f, 0, 9);
 					break;
 				}
 				case 1:
 				{
 					camera->eye = Vector3(22.5f, 0, 9);
+					break;
+				}
+				case 2:
+				{
+					camera->eye = Vector3(42.5f, 0, 9);
 					break;
 				}
 			}
@@ -297,12 +317,17 @@ void MooGL::Keyboard(unsigned char key, int x, int y)
 			{
 				case 0:
 				{
-					camera->eye = Vector3(0, 0, 9);
+					camera->eye = Vector3(2.5f, 0, 9);
 					break;
 				}
 				case 1:
 				{
-					camera->eye = Vector3(20, 0, 9);
+					camera->eye = Vector3(22.5f, 0, 9);
+					break;
+				}
+				case 2:
+				{
+					camera->eye = Vector3(42.5f, 0, 9);
 					break;
 				}
 			}
