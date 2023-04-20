@@ -58,21 +58,27 @@ void MooGL::InitObjects()
 	camera->eye.z = -5.0f; camera->up.y = 1.0f;
 	camera->eye.x = 0.0f; camera->eye.y = 0.0f; camera->eye.z = 9.0f;
 
-	Mesh* cubeMesh = MeshLoader::Load((char *)"cube.txt");
+	// Load meshes
+	Mesh* cubeMesh = MeshLoader::Load((char*)"cube.txt");
 	OBJMesh* monkeMesh = OBJLoader::LoadOBJ((char*)"objects/monke.obj");
 	OBJMesh* knotMesh = OBJLoader::LoadOBJ((char*)"objects/knot.obj");
 
-	Texture2D* texture = new Texture2D();
-	texture->Load((char*)"crate.bmp", 512, 512);
+	// Load textures
+	Texture2D* woodTexture = new Texture2D();
+	woodTexture->Load((char*)"crate.bmp", 512, 512);
 	Texture2D* monkeTexture = new Texture2D();
 	monkeTexture->Load((char*)"Monke.bmp", 512, 512);
+	Texture2D* grassTexture = new Texture2D();
+	grassTexture->Load((char*)"grass.bmp", 512, 512);
 
-	//objects.push_back(new Cube(cubeMesh, texture, 0.0f, 0.0f, 0.0f));
+	for (int i = 0; i < 200; i++)
+	{
+		primitives.push_back(new Cube(cubeMesh, woodTexture, ((rand() % 600) / 10.0f) - 20.0f, ((rand() % 400) / 10.0f) - 10.0f, -(rand() % 2000) / 10.0f));
+	}
 
-	objects["monkey"] = new OBJObject(monkeMesh, texture, 0.0f, 0.0f, 0.0f);;
-	objects["knot"] = new OBJObject(knotMesh, texture, 20.0f, 0.0f, 0.0f);;
+	objects["monkey"] = new OBJObject(monkeMesh, woodTexture, 0.0f, 0.0f, 0.0f);;
+	objects["knot"] = new OBJObject(knotMesh, grassTexture, 20.0f, 0.0f, 0.0f);;
 
-	//objects.push_back(new OBJObject(monkeMesh, texture, 0.0f, 0.0f, 0.0f));
 
 	/*for (int i = 0; i < 200; i++)
 	{
@@ -158,6 +164,11 @@ void MooGL::Update()
 	glLightfv(GL_LIGHT0, GL_SPECULAR, &(_lightData->specular.x));
 	glLightfv(GL_LIGHT0, GL_POSITION, &(_lightPosition->x));
 
+	for (SceneObject* n : primitives)
+	{
+		n->Update();
+	}
+
 	for (std::map<std::string, OBJObject*>::const_iterator it = objects.begin(); it != objects.end(); ++it)
 	{
 		it->second->Update();
@@ -176,8 +187,14 @@ void MooGL::Keyboard(unsigned char key, int x, int y)
 	{
 		case 'w': 
 		{
-			// Move the camera forward
-			camera->eye = camera->eye + dir;
+			//// Calculate the direction vector
+			//Vector3 dir = camera->center - camera->eye;
+			//dir.normalize();
+			//camera->eye = camera->eye + dir;
+
+			//// Move the camera forward
+			////if (camera->eye.x - dir.x > camera->center.x - 25 && camera->eye.x - dir.x < 25 && camera->eye.z - dir.z > camera->center.z + 7 && //camera->eye.z - dir.z < 20)
+			////	camera->eye = camera->eye + dir;
 
 			break;
 		}
@@ -200,13 +217,13 @@ void MooGL::Keyboard(unsigned char key, int x, int y)
 
 		case 's':
 		{
-			// Calculate the direction vector
-			Vector3 dir = camera->center - camera->eye;
-			dir.normalize();
+			//// Calculate the direction vector
+			//Vector3 dir = camera->center - camera->eye;
+			//dir.normalize();
 
-			// Move the camera forward
-			if (camera->eye.x - dir.x > camera->center.x - 20 && camera->eye.x - dir.x < 20 && camera->eye.z - dir.z > camera->center.z - 10 && camera->eye.z - dir.z < 10)
-			camera->eye = camera->eye - dir;
+			//// Move the camera forward
+			//if (camera->eye.x - dir.x > camera->center.x - 25 && camera->eye.x - dir.x < 25 && camera->eye.z - dir.z > camera->center.z - 15 && camera->eye.z - dir.z < 15)
+			//camera->eye = camera->eye - dir;
 
 			break;
 		}
@@ -241,16 +258,28 @@ void MooGL::Keyboard(unsigned char key, int x, int y)
 			{
 				case 0:
 				{
-					camera->eye = Vector3(0, 0, 9);
+					camera->eye = Vector3(2.25f, 0, 9);
 					break;
 				}
 				case 1:
 				{
-					camera->eye = Vector3(20, 0, 9);
+					camera->eye = Vector3(22.5f, 0, 9);
 					break;
 				}
 			}
 
+			break;
+		}
+
+		case 'e':
+		{
+			camera->eye.y -= 0.1f;
+			break;
+		}
+		
+		case 'q':
+		{
+			camera->eye.y += 0.1f;
 			break;
 		}
 
@@ -288,6 +317,13 @@ void MooGL::Display()
 {
 	glClearColor(0.094f, 0.094f, 0.094f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); //this clears the scene
+
+	for (SceneObject* n : primitives)
+	{
+		glPushMatrix();
+		n->Draw();
+		glPopMatrix();
+	}
 
 	for (std::map<std::string, OBJObject*>::const_iterator it = objects.begin(); it != objects.end(); ++it)
 	{
