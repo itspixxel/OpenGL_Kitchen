@@ -11,10 +11,10 @@ Cube::Cube(Mesh* mesh, Texture2D* texture, float x, float y, float z) : SceneObj
 	_texture = texture;
 
 	_material = new Material();
-	_material->ambient.x = 0.05; _material->ambient.y = 0.2; _material->ambient.z = 0.6; _material->ambient.w = 1.0;
-	_material->diffuse.x = 0.8; _material->diffuse.y = 0.05; _material->diffuse.z = 0.05; _material->diffuse.w = 1.0;
+	_material->ambient.x = 0.9654; _material->ambient.y = 0.0265; _material->ambient.z = 0.0564; _material->ambient.w = 1.0;
+	_material->diffuse.x = 0.0564; _material->diffuse.y = 0.0545; _material->diffuse.z = 0.6542; _material->diffuse.w = 1.0;
 	_material->specular.x = 1.0f; _material->specular.y = 1.0f; _material->specular.z = 1.0f; _material->specular.w = 1.0f;
-	_material->shininess = 1000.0f;
+	_material->shininess = 100.0f;
 }
 
 void Cube::Update()
