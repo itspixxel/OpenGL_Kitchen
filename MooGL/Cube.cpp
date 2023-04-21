@@ -2,7 +2,7 @@
 
 using namespace std;
 
-Cube::Cube(Mesh* mesh, Texture2D* texture, float x, float y, float z) : SceneObject(mesh, texture)
+Cube::Cube(Mesh* mesh, Material* material, Texture2D* texture, float x, float y, float z) : SceneObject(mesh, texture)
 {
 	_position.x = x;
 	_position.y = y;
@@ -11,16 +11,16 @@ Cube::Cube(Mesh* mesh, Texture2D* texture, float x, float y, float z) : SceneObj
 	_texture = texture;
 
 	_material = new Material();
-	_material->ambient.x = 0.9654; _material->ambient.y = 0.0265; _material->ambient.z = 0.0564; _material->ambient.w = 1.0;
-	_material->diffuse.x = 0.0564; _material->diffuse.y = 0.0545; _material->diffuse.z = 0.6542; _material->diffuse.w = 1.0;
-	_material->specular.x = 1.0f; _material->specular.y = 1.0f; _material->specular.z = 1.0f; _material->specular.w = 1.0f;
-	_material->shininess = 100.0f;
+	_material->ambient.x = material->ambient.x; _material->ambient.y = material->ambient.y; _material->ambient.z = material->ambient.z; _material->ambient.w = material->ambient.w;
+	_material->diffuse.x = material->diffuse.x; _material->diffuse.y = material->diffuse.y; _material->diffuse.z = material->diffuse.z; _material->diffuse.w = material->diffuse.w;
+	_material->specular.x = material->specular.x; _material->specular.y = material->specular.y; _material->specular.z = material->specular.z; _material->specular.w = material->specular.w;
+	_material->shininess = material->shininess;
 }
 
 void Cube::Update()
 {
 	_rotation += 0.5f;
-	//_position.z -= 0.05f;
+	_position.z += 0.05f;
 }
 
 void Cube::Draw()
@@ -42,7 +42,7 @@ void Cube::Draw()
 		glVertexPointer(3, GL_FLOAT, 0, _mesh->indexedVertices);
 
 		glMaterialfv(GL_FRONT, GL_AMBIENT, &(_material->ambient.x));
-		glMaterialfv(GL_FRONT, GL_DIFFUSE, &(_material->ambient.x));
+		glMaterialfv(GL_FRONT, GL_DIFFUSE, &(_material->diffuse.x));
 		glMaterialfv(GL_FRONT, GL_SPECULAR, &(_material->specular.x));
 		glMaterialf(GL_FRONT, GL_SHININESS, _material->shininess);
 

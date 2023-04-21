@@ -14,13 +14,14 @@ Texture2D::~Texture2D()
 
 bool Texture2D::Load(char* path, int width, int height)
 {
+	// ================ BMP LOADER ================
 	char* tempTextureData; int fileSize; ifstream inFile;
 	_width = width; _height = height;
 	inFile.open(path, ios::binary);
 
 	if (!inFile.good())
 	{
-		cerr << "Can't open texture file " << path << endl;
+		cerr << "Can't open texture file" << path << endl;
 		return false;
 	}
 
