@@ -497,19 +497,22 @@ void MooGL::Display()
 void MooGL::DrawString()
 {
 	glPushMatrix();
-		glTranslatef(0.0f, 1.25f, 0.0f);
+		Vector3 monkeyPosition = objects["monkey"]->GetPosition();
+		glTranslatef(monkeyPosition.x, monkeyPosition.y + 1.25f, monkeyPosition.z);
 		glRasterPos2f(0.0f, 0.0f);
 		glutBitmapString(GLUT_BITMAP_TIMES_ROMAN_24, (unsigned char*) "Monkey");
 	glPopMatrix();
 
 	glPushMatrix();
-		glTranslatef(20.0f, 1.25f, 0.0f);
+		Vector3 knotPosition = objects["knot"]->GetPosition();
+		glTranslatef(knotPosition.x - 0.25f, knotPosition.y + 1.3f, knotPosition.z);
 		glRasterPos2f(0.0f, 0.0f);
-		glutBitmapString(GLUT_BITMAP_TIMES_ROMAN_24, (unsigned char*) "Knot");
+		glutBitmapString(GLUT_BITMAP_TIMES_ROMAN_24, (unsigned char*) "Torus Knot");
 	glPopMatrix();
 
 	glPushMatrix();
-		glTranslatef(40.0f, 1.25f, 0.0f);
+		Vector3 teapotPosition = objects["teapot"]->GetPosition();
+		glTranslatef(teapotPosition.x, teapotPosition.y + 1.4f, teapotPosition.z);
 		glRasterPos2f(0.0f, 0.0f);
 		glutBitmapString(GLUT_BITMAP_TIMES_ROMAN_24, (unsigned char*) "Teapot");
 	glPopMatrix();
