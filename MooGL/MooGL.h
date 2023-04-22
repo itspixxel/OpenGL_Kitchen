@@ -48,6 +48,8 @@ class MooGL
 		void InitObjects();
 		void InitLighting();
 		void InitGL(int argc, char* argv[]);
+		void SpecialInput(int key, int x, int y);
+		void DrawString();
 
 	private:
 		Vector4* _lightPosition;

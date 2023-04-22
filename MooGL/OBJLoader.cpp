@@ -24,7 +24,7 @@ namespace OBJLoader
 		// check if in file opened correctly
 		if (!inFile.good())
 		{
-			std::cerr << "Can't open mesh file " << path << std::endl;
+			std::cerr << "Can't open mesh file" << path << std::endl;
 			return nullptr;
 		}
 

@@ -26,6 +26,4 @@ class SceneObject
 		virtual void Update();
 		virtual void Draw();
 };
-
-
 #endif // !_SceneObject

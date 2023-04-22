@@ -33,7 +33,7 @@ class Cube : public SceneObject
 		Vector3 _position;
 
 	public:
-		Cube(Mesh* mesh, Texture2D* _texture, float x, float y, float z);
+		Cube(Mesh* mesh, Material* material, Texture2D* _texture, float x, float y, float z);
 		~Cube();
 
 		void Draw();

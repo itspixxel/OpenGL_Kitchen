@@ -1,6 +1,6 @@
 #include "OBJObject.h"
 
-OBJObject::OBJObject(OBJMesh* mesh, Texture2D* _texture, float x, float y, float z) : SceneObject(mesh, _texture)
+OBJObject::OBJObject(OBJMesh* mesh, Material* material, Texture2D* _texture, float x, float y, float z) : SceneObject(mesh, _texture)
 {
 	_position.x = x;
 	_position.y = y;
@@ -9,19 +9,20 @@ OBJObject::OBJObject(OBJMesh* mesh, Texture2D* _texture, float x, float y, float
 	_rotation = 0.0f;
 
 	_material = new Material();
-	_material->ambient.x = 0.05; _material->ambient.y = 0.3514; _material->ambient.z = 0.0654; _material->ambient.w = 1.0;
-	_material->diffuse.x = 0.8; _material->diffuse.y = 0.05; _material->diffuse.z = 0.05; _material->diffuse.w = 1.0;
-	_material->specular.x = 5.0; _material->specular.y = 5.0; _material->specular.z = 5.0; _material->specular.w = 5.0;
-	_material->shininess = 100.0f;
+	_material->ambient.x = material->ambient.x; _material->ambient.y = material->ambient.y; _material->ambient.z = material->ambient.z; _material->ambient.w = material->ambient.w;
+	_material->diffuse.x = material->diffuse.x; _material->diffuse.y = material->diffuse.y; _material->diffuse.z = material->diffuse.z; _material->diffuse.w = material->diffuse.w;
+	_material->specular.x = material->specular.x; _material->specular.y = material->specular.y; _material->specular.z = material->specular.z; _material->specular.w = material->specular.w;
+	_material->shininess = material->shininess;
 }
 
 OBJObject::~OBJObject()
 {
+	delete _material;
 }
 
 void OBJObject::Update()
 {
-	//_rotation += 0.5f;
+	
 }
 
 void OBJObject::Draw()
@@ -32,7 +33,7 @@ void OBJObject::Draw()
 
 		glPushMatrix();
 		glTranslatef(_position.x, _position.y, _position.z);
-		glRotatef(_rotation, 0, 1, 0);
+		//glRotatef(_rotation, 0, 1, 0);
 
 		glBegin(GL_TRIANGLES);
 		for (int i = 0; i < _objMesh->indices.size(); i++)
@@ -42,7 +43,7 @@ void OBJObject::Draw()
 			glVertex3fv(&_objMesh->vertices[_objMesh->indices[i].vertexIndex - 1].x);
 
 			glMaterialfv(GL_FRONT, GL_AMBIENT, &(_material->ambient.x));
-			glMaterialfv(GL_FRONT, GL_DIFFUSE, &(_material->ambient.x));
+			glMaterialfv(GL_FRONT, GL_DIFFUSE, &(_material->diffuse.x));
 			glMaterialfv(GL_FRONT, GL_SPECULAR, &(_material->specular.x));
 			glMaterialf(GL_FRONT, GL_SHININESS, _material->shininess);
 		}

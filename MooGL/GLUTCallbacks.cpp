@@ -37,4 +37,9 @@ namespace GLUTCallbacks
 	{
 		mooGL->Keyboard(key, x, y);
 	}
+
+	void SpecialInput(int key, int x, int y)
+	{
+		mooGL->SpecialInput(key, x, y);
+	}
 }
