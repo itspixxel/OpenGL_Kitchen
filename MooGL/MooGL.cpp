@@ -137,7 +137,7 @@ void MooGL::InitObjects()
 	}
 
 	// Create objects and add to map
-	objects["toaster"] = new OBJObject(toasterMesh, toasterMaterial, plasticTexture, 5.0f, -4.0f, -10.0f);
+	objects["toaster"] = new OBJObject(toasterMesh, toasterMaterial, plasticTexture, 10.0f, -4.3f, -10.0f);
 	objects["knot"] = new OBJObject(knotMesh, knotMaterial, woodTexture, 20.0f, 0.0f, 0.0f);
 	objects["teapot"] = new OBJObject(teapotMesh, teapotMaterial, marbleTexture, 40.0f, 0.0f, 0.0f);
 	objects["kitchen"] = new OBJObject(kitchenScene, kitchenMaterial, kitchenTexture, 0.0, 0.0f, 0.0f);
@@ -237,7 +237,7 @@ void MooGL::Update()
 			break;
 		}
 
-		// Focus on teapot object
+		// Focus on kitchen object
 		case 3:
 		{
 			if (objects.find("kitchen") != objects.end())
