@@ -3,6 +3,7 @@
 
 MooGL::MooGL(int argc, char* argv[])
 {
+	// Randomize srand with a seed
 	srand(time(NULL));
 	InitGL(argc, argv);
 	InitObjects();
@@ -18,15 +19,19 @@ MooGL::~MooGL(void)
 
 void MooGL::InitGL(int argc, char* argv[])
 {
+	// Initialize GLUTCallbacks
 	GLUTCallbacks::Init(this);
 
+	// Initialize GLUT
 	glutInit(&argc, argv);
 
+	// Initialize window settings
 	glutInitDisplayMode(GLUT_DOUBLE);
 	glutInitWindowSize(800, 800);
 	glutInitWindowPosition(100, 100);
 	glutCreateWindow("MooGL");
 
+	// Bind OpenGL to program funcs
 	glutDisplayFunc(GLUTCallbacks::Display);
 	glutKeyboardFunc(GLUTCallbacks::Keyboard);
 	glutSpecialFunc(GLUTCallbacks::SpecialInput);
@@ -38,6 +43,7 @@ void MooGL::InitGL(int argc, char* argv[])
 	glViewport(0, 0, 800, 800);
 	gluPerspective(30, 1, 0.01, 1000);
 
+	// Enable GL modes
 	glEnable(GL_TEXTURE_2D);
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
@@ -45,8 +51,10 @@ void MooGL::InitGL(int argc, char* argv[])
 	glEnable(GL_LIGHT0);
 	glEnable(GLUT_MULTISAMPLE);
 
+	// Backface culling
 	glCullFace(GL_BACK);
 
+	// Switch to model view
 	glMatrixMode(GL_MODELVIEW);
 }
 
@@ -153,6 +161,8 @@ void MooGL::Update()
 	// Switch between different focus objects
 	switch (objectFocusID)
 	{
+		
+		// Focus on monkey object
 		case 0:
 		{
 			if (objects.find("monkey") != objects.end())
@@ -171,6 +181,8 @@ void MooGL::Update()
 			}
 			break;
 		}
+
+		// Focus on torus knot object
 		case 1:
 		{
 			if (objects.find("knot") != objects.end())
@@ -189,6 +201,8 @@ void MooGL::Update()
 			}
 			break;
 		}
+
+		// Focus on teapot object
 		case 2:
 		{
 			if (objects.find("teapot") != objects.end())
@@ -240,6 +254,7 @@ void MooGL::Keyboard(unsigned char key, int x, int y)
 
 	switch (key)
 	{
+		// Rotate around current object in the left direction
 		case 'a':
 		{
 			Vector3 cross = dir.crossProduct(camera->up);
@@ -256,6 +271,7 @@ void MooGL::Keyboard(unsigned char key, int x, int y)
 			break;
 		}
 
+		// Rotate around current object in the right direction
 		case 'd':
 		{
 			Vector3 cross = dir.crossProduct(camera->up);
@@ -289,7 +305,8 @@ void MooGL::SpecialInput(int key, int x, int y)
 {
 	switch (key)
 	{
-		case GLUT_KEY_UP:
+		// Move current object up with up arrow key
+	case GLUT_KEY_UP:
 		{
 			if (objectFocusID == 0)
 			{
@@ -341,6 +358,7 @@ void MooGL::SpecialInput(int key, int x, int y)
 			break;
 		}
 
+		// Move current object left with left arrow key
 		case GLUT_KEY_LEFT:
 		{
 			if (objectFocusID == 0)
@@ -367,6 +385,7 @@ void MooGL::SpecialInput(int key, int x, int y)
 			break;
 		}
 
+		// Move current object right with right arrow key
 		case GLUT_KEY_RIGHT:
 		{
 			if (objectFocusID == 0)
@@ -393,6 +412,7 @@ void MooGL::SpecialInput(int key, int x, int y)
 			break;
 		}
 
+		// Switch to next object with PAGE UP key
 		case GLUT_KEY_PAGE_UP:
 		{
 			objects["monkey"]->SetPosition(0, 0, 0);
@@ -429,6 +449,7 @@ void MooGL::SpecialInput(int key, int x, int y)
 			break;
 		}
 
+		// Switch to last object with PAGE DOWN key
 		case GLUT_KEY_PAGE_DOWN:
 		{
 			objects["monkey"]->SetPosition(0, 0, 0);
@@ -496,24 +517,35 @@ void MooGL::Display()
 
 void MooGL::DrawString()
 {
+	/*glPushMatrix();
+		glTranslatef(position->x)
+	glPopMatrix();*/
+	glDisable(GL_LIGHTING);
+	// Monkey text
 	glPushMatrix();
 		Vector3 monkeyPosition = objects["monkey"]->GetPosition();
+		glColor3f(1, 1, 1);
 		glTranslatef(monkeyPosition.x, monkeyPosition.y + 1.25f, monkeyPosition.z);
 		glRasterPos2f(0.0f, 0.0f);
 		glutBitmapString(GLUT_BITMAP_TIMES_ROMAN_24, (unsigned char*) "Monkey");
 	glPopMatrix();
 
+	// Knot text
 	glPushMatrix();
 		Vector3 knotPosition = objects["knot"]->GetPosition();
+		glColor3f(1, 1, 1);
 		glTranslatef(knotPosition.x - 0.25f, knotPosition.y + 1.3f, knotPosition.z);
 		glRasterPos2f(0.0f, 0.0f);
 		glutBitmapString(GLUT_BITMAP_TIMES_ROMAN_24, (unsigned char*) "Torus Knot");
 	glPopMatrix();
 
+	// Teapot text
 	glPushMatrix();
 		Vector3 teapotPosition = objects["teapot"]->GetPosition();
+		glColor3f(1, 1, 1);
 		glTranslatef(teapotPosition.x, teapotPosition.y + 1.4f, teapotPosition.z);
 		glRasterPos2f(0.0f, 0.0f);
 		glutBitmapString(GLUT_BITMAP_TIMES_ROMAN_24, (unsigned char*) "Teapot");
 	glPopMatrix();
+	glEnable(GL_LIGHTING);
 }
