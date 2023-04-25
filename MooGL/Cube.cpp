@@ -2,13 +2,14 @@
 
 using namespace std;
 
-Cube::Cube(Mesh* mesh, Material* material, Texture2D* texture, float x, float y, float z) : SceneObject(mesh, texture)
+Cube::Cube(Mesh* mesh, bool isSpinning, Material* material, Texture2D* texture, float x, float y, float z) : SceneObject(mesh, texture)
 {
 	_position.x = x;
 	_position.y = y;
 	_position.z = z;
 	
 	_texture = texture;
+	_isSpinning = isSpinning;
 
 	_material = new Material();
 	_material->ambient.x = material->ambient.x; _material->ambient.y = material->ambient.y; _material->ambient.z = material->ambient.z; _material->ambient.w = material->ambient.w;
@@ -19,13 +20,14 @@ Cube::Cube(Mesh* mesh, Material* material, Texture2D* texture, float x, float y,
 
 void Cube::Update()
 {
-	_rotation += 0.5f;
-	_position.z += 0.05f;
+	if (_isSpinning)
+	{
+		_rotation += 0.5f;
+	}
 }
 
 void Cube::Draw()
 {
-
 	if (_mesh->indexedVertices != nullptr && _mesh->indexedNormals != nullptr && _mesh->indices != nullptr)
 	{
 		glBindTexture(GL_TEXTURE_2D, _texture->GetID());
@@ -33,7 +35,7 @@ void Cube::Draw()
 
 		glScalef(1, 1, 1);
 		glTranslatef(_position.x, _position.y, _position.z);
-		glRotatef(_rotation, 1.0f, 1.0f, 1.0f);
+		glRotatef(_rotation, 0.0f, 1.0f, 0.0f);
 
 		glEnable(GL_NORMAL_ARRAY);
 		glNormalPointer(GL_FLOAT, 0, _mesh->indexedNormals);

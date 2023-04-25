@@ -30,10 +30,11 @@ class OBJObject : public SceneObject
 		Material* _material;
 		GLfloat _rotation;
 		Vector3 _position;
+		bool _isSpinning;
 
 	public:
 
-		OBJObject(OBJMesh* objMesh, Material* material, Texture2D* _texture, float x, float y, float z);
+		OBJObject(OBJMesh* objMesh, bool isSpinning, Material* material, Texture2D* _texture, float x, float y, float z);
 		~OBJObject();
 
 		GLfloat GetRotation() { return _rotation; }

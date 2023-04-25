@@ -1,12 +1,13 @@
 #include "OBJObject.h"
 
-OBJObject::OBJObject(OBJMesh* mesh, Material* material, Texture2D* _texture, float x, float y, float z) : SceneObject(mesh, _texture)
+OBJObject::OBJObject(OBJMesh* mesh, bool isSpinning, Material* material, Texture2D* _texture, float x, float y, float z) : SceneObject(mesh, _texture)
 {
 	_position.x = x;
 	_position.y = y;
 	_position.z = z;
 
 	_rotation = 0.0f;
+	_isSpinning = isSpinning;
 
 	_material = new Material();
 	_material->ambient.x = material->ambient.x; _material->ambient.y = material->ambient.y; _material->ambient.z = material->ambient.z; _material->ambient.w = material->ambient.w;
@@ -17,12 +18,16 @@ OBJObject::OBJObject(OBJMesh* mesh, Material* material, Texture2D* _texture, flo
 
 OBJObject::~OBJObject()
 {
+	
 	delete _material;
 }
 
 void OBJObject::Update()
 {
-	
+	if (_isSpinning)
+	{
+		_rotation += 0.5f;
+	}
 }
 
 void OBJObject::Draw()
@@ -33,7 +38,7 @@ void OBJObject::Draw()
 
 		glPushMatrix();
 		glTranslatef(_position.x, _position.y, _position.z);
-		//glRotatef(_rotation, 0, 1, 0);
+		glRotatef(_rotation, 0, 1, 0);
 
 		glBegin(GL_TRIANGLES);
 		for (int i = 0; i < _objMesh->indices.size(); i++)
