@@ -131,10 +131,10 @@ void MooGL::InitObjects()
 	}
 
 	// Create objects and add to map
-	objects["toaster"] = new OBJObject(toasterMesh, crateMaterial, plasticTexture, 10.0f, -4.3f, -10.0f);
-	objects["donut"] = new OBJObject(donutMesh, toasterMaterial, marbleTexture, 5.0f, -5.8f, 12.5f);
+	objects["toaster"] = new OBJObject(toasterMesh, toasterMaterial, plasticTexture, 10.0f, -4.3f, -10.0f);
+	objects["donut"] = new OBJObject(donutMesh, donutMaterial, marbleTexture, 5.0f, -5.8f, 12.5f);
 	objects["teapot"] = new OBJObject(teapotMesh, teapotMaterial, marbleTexture, 40.0f, 0.0f, 0.0f);
-	objects["kitchen"] = new OBJObject(kitchenScene, donutMaterial, woodTexture, 0.0, 0.0f, 0.0f);
+	objects["kitchen"] = new OBJObject(kitchenScene, kitchenMaterial, marbleTexture, 0.0, 0.0f, 0.0f);
 
 	camera = new Camera();
 	camera->up.y = 1.0f;
@@ -288,100 +288,38 @@ void MooGL::Keyboard(unsigned char key, int x, int y)
 
 	switch (key)
 	{
+		// Move the camera forwards
+		case 'w':
+		{
+			camera->eye = camera->eye + dir * 0.08f;
+			break;
+		}
+
+		// Move the camera backwards
+		case 's':
+		{
+			camera->eye = camera->eye - dir * 0.08f;
+			break;
+		}
 		// Rotate around current object in the left direction
 		case 'a':
 		{
-			Vector3 cross = dir.crossProduct(camera->up);
-			cross.normalize();
+			Vector3 cross = dir.crossProduct(camera->up) * 0.15f;
+			//cross.normalize();
 
-			switch (objectFocusID)
-			{
-				case 0:
-				{
-					if (camera->eye.x - cross.x > camera->center.x - 20 && camera->eye.x - cross.x < camera->center.x + 20)
-					{
-						camera->eye.x = camera->eye.x - cross.x;
-					}
-					if (camera->eye.z - cross.z > camera->center.z - 10 && camera->eye.z - cross.z < camera->center.z + 10)
-					{
-						camera->eye.z = camera->eye.z - cross.z;
-					}
-					break;
-				}
-
-				case 1:
-				{
-					if (camera->eye.x - cross.x > camera->center.x - 20 && camera->eye.x - cross.x < camera->center.x + 20)
-					{
-						camera->eye.x = camera->eye.x - cross.x;
-					}
-					if (camera->eye.z - cross.z > camera->center.z - 10 && camera->eye.z - cross.z < camera->center.z + 10)
-					{
-						camera->eye.z = camera->eye.z - cross.z;
-					}
-					break;
-				}
-			}
-
+			camera->eye.x = camera->eye.x - cross.x;
+			camera->eye.z = camera->eye.z - cross.z;
 			break;
 		}
 
 		// Rotate around current object in the right direction
 		case 'd':
 		{
-			Vector3 cross = dir.crossProduct(camera->up) * 0.1f;
-			cross.normalize();
+			Vector3 cross = dir.crossProduct(camera->up) * 0.15f;
+			//cross.normalize();
 
-			switch (objectFocusID)
-			{
-				case 0:
-				{
-					if (camera->eye.x + cross.x > camera->center.x - 20 && camera->eye.x + cross.x < camera->center.x + 20)
-					{
-						camera->eye.x = camera->eye.x + cross.x;
-					}
-					if (camera->eye.z + cross.z > camera->center.z - 10 && camera->eye.z + cross.z < camera->center.z + 10)
-					{
-						camera->eye.z = camera->eye.z + cross.z;
-					}
-					break;
-				}
-				case 1:
-				{
-					if (camera->eye.x + cross.x > camera->center.x - 20 && camera->eye.x + cross.x < camera->center.x + 20)
-					{
-						camera->eye.x = camera->eye.x + cross.x;
-					}
-					if (camera->eye.z + cross.z > camera->center.z - 10 && camera->eye.z + cross.z < camera->center.z + 10)
-					{
-						camera->eye.z = camera->eye.z + cross.z;
-					}
-
-					break;
-				}
-				case 2:
-				{
-					if (camera->eye.x + cross.x > camera->center.x - 5 && camera->eye.x + cross.x < camera->center.x + 5)
-					{
-						camera->eye.x = camera->eye.x + cross.x;
-					}
-					if (camera->eye.z + cross.z > camera->center.z - 2 && camera->eye.z + cross.z < camera->center.z + 2)
-					{
-						camera->eye.z = camera->eye.z + cross.z;
-					}
-				}
-				case 3:
-				{
-					if (camera->eye.x + cross.x > camera->center.x - 5 && camera->eye.x + cross.x < camera->center.x + 5)
-					{
-						camera->eye.x = camera->eye.x + cross.x;
-					}
-					if (camera->eye.z + cross.z > camera->center.z - 2 && camera->eye.z + cross.z < camera->center.z + 2)
-					{
-						camera->eye.z = camera->eye.z + cross.z;
-					}
-				}
-			}
+			camera->eye.x = camera->eye.x + cross.x;
+			camera->eye.z = camera->eye.z + cross.z;
 			break;
 		}
 
@@ -570,7 +508,7 @@ void MooGL::SpecialInput(int key, int x, int y)
 				{
 					camera->eye = objects["kitchen"]->GetPosition() - Vector3(-2.5f, 0, 9);
 					break;
-			}
+				}
 			}
 			break;
 		}
@@ -593,26 +531,26 @@ void MooGL::SpecialInput(int key, int x, int y)
 
 			switch (objectFocusID)
 			{
-				case 0:
-				{
-					camera->eye = objects["toaster"]->GetPosition() - Vector3(5.0f, -4.3f, -9); 
-					break;
-				}
-				case 1:
-				{
-					camera->eye = objects["donut"]->GetPosition() - Vector3(-2.5f, 0, 9);
-					break;
-				}
-				case 2:
-				{
-					camera->eye = objects["teapot"]->GetPosition() - Vector3(-2.5f, 0, 9);
-					break;
-				}
-				case 3:
-				{
-					camera->eye = objects["kitchen"]->GetPosition() - Vector3(-2.5f, 0, 9);
-					break;
-				}
+			case 0:
+			{
+				camera->eye = objects["toaster"]->GetPosition() - Vector3(5.0f, -4.3f, -9);
+				break;
+			}
+			case 1:
+			{
+				camera->eye = objects["donut"]->GetPosition() - Vector3(5.0f, -4.3f, 9);
+				break;
+			}
+			case 2:
+			{
+				camera->eye = objects["teapot"]->GetPosition() - Vector3(-2.5f, 0, 9);
+				break;
+			}
+			case 3:
+			{
+				camera->eye = objects["kitchen"]->GetPosition() - Vector3(-2.5f, 0, 9);
+				break;
+			}
 			}
 			break;
 		}
