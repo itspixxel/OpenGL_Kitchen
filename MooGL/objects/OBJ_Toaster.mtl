@@ -1,0 +1,15 @@
+# Blender 3.1.2 MTL File: 'None'
+# www.blender.org
+
+newmtl main
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd  K:\YANDEX\3D Modelling\Projects\toaster\toaster_low_main_BaseColor.png
+map_Ns  K:\YANDEX\3D Modelling\Projects\toaster\toaster_low_main_Roughness.png
+map_refl  K:\YANDEX\3D Modelling\Projects\toaster\toaster_low_main_Metallic.png

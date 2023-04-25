@@ -1,5 +1,5 @@
 #include "MooGL.h"
-#define MAX_OBJECTS 3
+#define MAX_OBJECTS 4
 
 MooGL::MooGL(int argc, char* argv[])
 {
@@ -66,15 +66,17 @@ void MooGL::InitObjects()
 
 	// Load meshes
 	Mesh* cubeMesh = MeshLoader::Load((char*)"objects/cube.txt");
-	OBJMesh* monkeMesh = OBJLoader::LoadOBJ((char*)"objects/OBJ_Monke.obj");
+	OBJMesh* toasterMesh = OBJLoader::LoadOBJ((char*)"objects/OBJ_Toaster.obj");
 	OBJMesh* knotMesh = OBJLoader::LoadOBJ((char*)"objects/OBJ_Knot.obj");
 	OBJMesh* teapotMesh = OBJLoader::LoadOBJ((char*)"objects/OBJ_Teapot.obj");
+	OBJMesh* kitchenScene = OBJLoader::LoadOBJ((char*)"objects/OBJ_KitchenScene.obj");
 
 	// Initialize materials
 	Material* crateMaterial = new Material();
-	Material* monkeMaterial = new Material();
+	Material* toasterMaterial = new Material();
 	Material* teapotMaterial = new Material();
 	Material* knotMaterial = new Material();
+	Material* kitchenMaterial = new Material();
 
 	// Crate material
 	crateMaterial->ambient.x = 0.545f; crateMaterial->diffuse.x = 0.545f; crateMaterial->specular.x = 0.984f;
@@ -83,10 +85,10 @@ void MooGL::InitObjects()
 	crateMaterial->shininess = 25.0f;
 
 	// Monke material
-	monkeMaterial->ambient.x = 0.648f; monkeMaterial->diffuse.x = 0.514f; monkeMaterial->specular.x = 2.51f;
-	monkeMaterial->ambient.y = 0.654f; monkeMaterial->diffuse.y = 0.694f; monkeMaterial->specular.y = 4.06f;
-	monkeMaterial->ambient.z = 0.587f; monkeMaterial->diffuse.z = 0.648f; monkeMaterial->specular.z = 9.59f;
-	monkeMaterial->shininess = 50.0f;
+	toasterMaterial->ambient.x = 0.648f; toasterMaterial->diffuse.x = 0.514f; toasterMaterial->specular.x = 2.51f;
+	toasterMaterial->ambient.y = 0.654f; toasterMaterial->diffuse.y = 0.694f; toasterMaterial->specular.y = 4.06f;
+	toasterMaterial->ambient.z = 0.587f; toasterMaterial->diffuse.z = 0.648f; toasterMaterial->specular.z = 9.59f;
+	toasterMaterial->shininess = 50.0f;
 
 	// Teapot material
 	teapotMaterial->ambient.x = 0.854f; teapotMaterial->diffuse.x = 0.481f; teapotMaterial->specular.x = 9.59f;
@@ -99,6 +101,12 @@ void MooGL::InitObjects()
 	knotMaterial->ambient.y = 0.845f; knotMaterial->diffuse.y = 0.684f; knotMaterial->specular.y = 0.689f;
 	knotMaterial->ambient.z = 0.645f; knotMaterial->diffuse.z = 0.816f; knotMaterial->specular.z = 0.614f;
 	knotMaterial->shininess = 100.0f;
+
+	// Kitchen material
+	kitchenMaterial->ambient.x = 0.5f; kitchenMaterial->diffuse.x = 0.5f; kitchenMaterial->specular.x = 0.5f;
+	kitchenMaterial->ambient.y = 0.5f; kitchenMaterial->diffuse.y = 0.5f; kitchenMaterial->specular.y = 0.5f;
+	kitchenMaterial->ambient.z = 0.5f; kitchenMaterial->diffuse.z = 0.5f; kitchenMaterial->specular.z = 0.5f;
+	kitchenMaterial->shininess = 100.0f;
 
 	// Load textures
 	Texture2D* starsTexture = new Texture2D();
@@ -116,6 +124,12 @@ void MooGL::InitObjects()
 	Texture2D* woodTexture = new Texture2D();
 	woodTexture->Load((char*)"textures/TX_Wood.bmp", 512, 512);
 
+	Texture2D* kitchenTexture = new Texture2D();
+	kitchenTexture->Load((char*)"textures/TX_Kitchen.bmp", 512, 512);
+
+	Texture2D* toasterTexture = new Texture2D();
+	toasterTexture->Load((char*)"textures/TX_Toaster.bmp", 512, 512);
+
 	// Cube field
 	for (int i = 0; i < 200; i++)
 	{
@@ -123,9 +137,10 @@ void MooGL::InitObjects()
 	}
 
 	// Create objects and add to map
-	objects["monkey"] = new OBJObject(monkeMesh, monkeMaterial, plasticTexture, 0.0f, 0.0f, 0.0f);
+	objects["toaster"] = new OBJObject(toasterMesh, toasterMaterial, plasticTexture, 5.0f, -4.0f, -10.0f);
 	objects["knot"] = new OBJObject(knotMesh, knotMaterial, woodTexture, 20.0f, 0.0f, 0.0f);
 	objects["teapot"] = new OBJObject(teapotMesh, teapotMaterial, marbleTexture, 40.0f, 0.0f, 0.0f);
+	objects["kitchen"] = new OBJObject(kitchenScene, kitchenMaterial, kitchenTexture, 0.0, 0.0f, 0.0f);
 }
 
 void MooGL::InitLighting()
@@ -162,12 +177,12 @@ void MooGL::Update()
 	switch (objectFocusID)
 	{
 		
-		// Focus on monkey object
+		// Focus on toaster object
 		case 0:
 		{
-			if (objects.find("monkey") != objects.end())
+			if (objects.find("toaster") != objects.end())
 			{
-				camera->center = objects["monkey"]->GetPosition();
+				camera->center = objects["toaster"]->GetPosition();
 				gluLookAt(
 					camera->eye.x, camera->eye.y, camera->eye.z,
 					camera->center.x, camera->center.y, camera->center.z,
@@ -221,6 +236,26 @@ void MooGL::Update()
 			}
 			break;
 		}
+
+		// Focus on teapot object
+		case 3:
+		{
+			if (objects.find("kitchen") != objects.end())
+			{
+				camera->center = objects["kitchen"]->GetPosition();
+				gluLookAt(
+					camera->eye.x, camera->eye.y, camera->eye.z,
+					camera->center.x, camera->center.y, camera->center.z,
+					camera->up.x, camera->up.y, camera->up.z);
+			}
+			else {
+				gluLookAt(
+					camera->eye.x, camera->eye.y, camera->eye.z,
+					camera->center.x, camera->center.y, camera->center.z,
+					camera->up.x, camera->up.y, camera->up.z);
+			}
+			break;
+		}
 		
 	}
 	
@@ -231,10 +266,10 @@ void MooGL::Update()
 	glLightfv(GL_LIGHT0, GL_POSITION, &(_lightPosition->x));
 
 	// Update primitive objects every frame
-	for (SceneObject* n : primitives)
+	/*for (SceneObject* n : primitives)
 	{
 		n->Update();
-	}
+	}*/
 
 	// Update OBJ objects every frame
 	for (std::map<std::string, OBJObject*>::const_iterator it = objects.begin(); it != objects.end(); ++it)
@@ -310,10 +345,10 @@ void MooGL::SpecialInput(int key, int x, int y)
 		{
 			if (objectFocusID == 0)
 			{
-				Vector3 currentPos = objects["monkey"]->GetPosition();
+				Vector3 currentPos = objects["toaster"]->GetPosition();
 				Vector3 newPos = currentPos + Vector3(0.0f, 0.5f, 0.0f);
 				camera->eye = currentPos + Vector3(0.0f, 0.0f, 9.0f);
-				objects["monkey"]->SetPosition(newPos);
+				objects["toaster"]->SetPosition(newPos);
 			}
 			if (objectFocusID == 1)
 			{
@@ -328,6 +363,13 @@ void MooGL::SpecialInput(int key, int x, int y)
 				Vector3 newPos = currentPos + Vector3(0.0f, 0.5f, 0.0f);
 				camera->eye = currentPos + Vector3(0.0f, 0.0f, 9.0f);
 				objects["teapot"]->SetPosition(newPos);
+			}
+			if (objectFocusID == 3)
+			{
+				Vector3 currentPos = objects["kitchen"]->GetPosition();
+				Vector3 newPos = currentPos + Vector3(0.0f, 0.5f, 0.0f);
+				camera->eye = currentPos + Vector3(0.0f, 0.0f, 9.0f);
+				objects["kitchen"]->SetPosition(newPos);
 			}
 			break;
 		}
@@ -336,10 +378,10 @@ void MooGL::SpecialInput(int key, int x, int y)
 		{
 			if (objectFocusID == 0)
 			{
-				Vector3 currentPos = objects["monkey"]->GetPosition();
+				Vector3 currentPos = objects["toaster"]->GetPosition();
 				Vector3 newPos = currentPos - Vector3(0.0f, 0.5f, 0.0f);
 				camera->eye = currentPos + Vector3(0.0f, 0.0f, 9.0f);
-				objects["monkey"]->SetPosition(newPos);
+				objects["toaster"]->SetPosition(newPos);
 			}
 			if (objectFocusID == 1)
 			{
@@ -354,6 +396,13 @@ void MooGL::SpecialInput(int key, int x, int y)
 				Vector3 newPos = currentPos - Vector3(0.0f, 0.5f, 0.0f);
 				camera->eye = currentPos + Vector3(0.0f, 0.0f, 9.0f);
 				objects["teapot"]->SetPosition(newPos);
+			}
+			if (objectFocusID == 3)
+			{
+				Vector3 currentPos = objects["kitchen"]->GetPosition();
+				Vector3 newPos = currentPos - Vector3(0.0f, 0.5f, 0.0f);
+				camera->eye = currentPos + Vector3(0.0f, 0.0f, 9.0f);
+				objects["kitchen"]->SetPosition(newPos);
 			}
 			break;
 		}
@@ -363,10 +412,10 @@ void MooGL::SpecialInput(int key, int x, int y)
 		{
 			if (objectFocusID == 0)
 			{
-				Vector3 currentPos = objects["monkey"]->GetPosition();
+				Vector3 currentPos = objects["toaster"]->GetPosition();
 				Vector3 newPos = currentPos - Vector3(0.5f, 0.0f, 0.0f);
 				camera->eye = currentPos + Vector3(0.0f, 0.0f, 9.0f);
-				objects["monkey"]->SetPosition(newPos);
+				objects["toaster"]->SetPosition(newPos);
 			}
 			if (objectFocusID == 1)
 			{
@@ -382,6 +431,13 @@ void MooGL::SpecialInput(int key, int x, int y)
 				camera->eye = currentPos + Vector3(0.0f, 0.0f, 9.0f);
 				objects["teapot"]->SetPosition(newPos);
 			}
+			if (objectFocusID == 3)
+			{
+				Vector3 currentPos = objects["kitchen"]->GetPosition();
+				Vector3 newPos = currentPos - Vector3(0.5f, 0.0f, 0.0f);
+				camera->eye = currentPos + Vector3(0.0f, 0.0f, 9.0f);
+				objects["kitchen"]->SetPosition(newPos);
+			}
 			break;
 		}
 
@@ -390,10 +446,10 @@ void MooGL::SpecialInput(int key, int x, int y)
 		{
 			if (objectFocusID == 0)
 			{
-				Vector3 currentPos = objects["monkey"]->GetPosition();
+				Vector3 currentPos = objects["toaster"]->GetPosition();
 				Vector3 newPos = currentPos + Vector3(0.5f, 0.0f, 0.0f);
 				camera->eye = currentPos + Vector3(0.0f, 0.0f, 9.0f);
-				objects["monkey"]->SetPosition(newPos);
+				objects["toaster"]->SetPosition(newPos);
 			}
 			if (objectFocusID == 1)
 			{
@@ -415,9 +471,10 @@ void MooGL::SpecialInput(int key, int x, int y)
 		// Switch to next object with PAGE UP key
 		case GLUT_KEY_PAGE_UP:
 		{
-			objects["monkey"]->SetPosition(0, 0, 0);
+			objects["toaster"]->SetPosition(0, 0, 0);
 			objects["knot"]->SetPosition(20, 0, 0);
 			objects["teapot"]->SetPosition(40, 0, 0);
+			objects["kitchen"]->SetPosition(0, 0, 0);
 
 			if (objectFocusID < MAX_OBJECTS - 1)
 			{
@@ -445,6 +502,11 @@ void MooGL::SpecialInput(int key, int x, int y)
 					camera->eye = Vector3(42.5f, 0, 9);
 					break;
 				}
+				case 3:
+				{
+					camera->eye = Vector3(0, 0, 0);
+					break;
+				}
 			}
 			break;
 		}
@@ -452,9 +514,10 @@ void MooGL::SpecialInput(int key, int x, int y)
 		// Switch to last object with PAGE DOWN key
 		case GLUT_KEY_PAGE_DOWN:
 		{
-			objects["monkey"]->SetPosition(0, 0, 0);
+			objects["toaster"]->SetPosition(0, 0, 0);
 			objects["knot"]->SetPosition(20, 0, 0);
 			objects["teapot"]->SetPosition(40, 0, 0);
+			objects["kitchen"]->SetPosition(0, 0, 0);
 
 			if (objectFocusID > 0)
 			{
@@ -481,6 +544,11 @@ void MooGL::SpecialInput(int key, int x, int y)
 					camera->eye = Vector3(42.5f, 0, 9);
 					break;
 				}
+				case 3:
+				{
+					camera->eye = Vector3(0, 0, 0);
+					break;
+				}
 			}
 			break;
 		}
@@ -496,12 +564,12 @@ void MooGL::Display()
 	DrawString();
 
 	// Draw all primitives
-	for (SceneObject* n : primitives)
+	/*for (SceneObject* n : primitives)
 	{
 		glPushMatrix();
 			n->Draw();
 		glPopMatrix();
-	}
+	}*/
 
 	// Draw all OBJs
 	for (std::map<std::string, OBJObject*>::const_iterator it = objects.begin(); it != objects.end(); ++it)
@@ -521,13 +589,13 @@ void MooGL::DrawString()
 		glTranslatef(position->x)
 	glPopMatrix();*/
 	glDisable(GL_LIGHTING);
-	// Monkey text
+	// toaster text
 	glPushMatrix();
-		Vector3 monkeyPosition = objects["monkey"]->GetPosition();
+		Vector3 toasterPos = objects["toaster"]->GetPosition();
 		glColor3f(1, 1, 1);
-		glTranslatef(monkeyPosition.x, monkeyPosition.y + 1.25f, monkeyPosition.z);
+		glTranslatef(toasterPos.x, toasterPos.y + 1.25f, toasterPos.z);
 		glRasterPos2f(0.0f, 0.0f);
-		glutBitmapString(GLUT_BITMAP_TIMES_ROMAN_24, (unsigned char*) "Monkey");
+		glutBitmapString(GLUT_BITMAP_TIMES_ROMAN_24, (unsigned char*) "Toaster");
 	glPopMatrix();
 
 	// Knot text
