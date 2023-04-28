@@ -145,6 +145,9 @@
     <ClCompile Include="MeshLoader.cpp" />
     <ClCompile Include="OBJLoader.cpp" />
     <ClCompile Include="OBJObject.cpp" />
+    <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="SceneGraph.cpp" />
+    <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="SceneObject.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Texture2D.cpp" />
@@ -156,6 +159,9 @@
     <ClInclude Include="MeshLoader.h" />
     <ClInclude Include="OBJLoader.h" />
     <ClInclude Include="OBJObject.h" />
+    <ClInclude Include="Scene.h" />
+    <ClInclude Include="SceneGraph.h" />
+    <ClInclude Include="SceneManager.h" />
     <ClInclude Include="SceneObject.h" />
     <ClInclude Include="Structures.h" />
     <ClInclude Include="Texture2D.h" />
