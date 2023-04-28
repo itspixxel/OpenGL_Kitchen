@@ -1,6 +1,7 @@
 // Includes
 #include "GLUTCallbacks.h"
 #include "MooGL.h"
+#include "SceneManager.h"
 
 // Namespace implementation
 namespace GLUTCallbacks
@@ -9,6 +10,12 @@ namespace GLUTCallbacks
 	{
 		// Initialise to a null pointer before we do anything
 		MooGL* mooGL = nullptr;
+		SceneManager* sceneManager = nullptr;
+	}
+
+	void Init(SceneManager* gl)
+	{
+		sceneManager = gl;
 	}
 
 	void Init(MooGL* gl)
@@ -23,12 +30,24 @@ namespace GLUTCallbacks
 		{
 			mooGL->Display();
 		}
+		else if (sceneManager != nullptr)
+		{
+			sceneManager->Display();
+		}
 	}
 
 	void Timer(int preferredRefresh)
 	{
 		int updateTime = glutGet(GLUT_ELAPSED_TIME);
-		mooGL->Update();
+		if (mooGL != nullptr)
+		{
+			mooGL->Update();
+		}
+		else if (sceneManager != nullptr)
+		{
+			sceneManager->Update();
+		}
+
 		updateTime = glutGet(GLUT_ELAPSED_TIME) - updateTime;
 		glutTimerFunc(preferredRefresh - updateTime, GLUTCallbacks::Timer, preferredRefresh);
 	}
