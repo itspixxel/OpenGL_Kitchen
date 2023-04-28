@@ -31,9 +31,10 @@ class Cube : public SceneObject
 		Material* _material;
 		GLfloat _rotation = 0;
 		Vector3 _position;
+		bool _isSpinning;
 
 	public:
-		Cube(Mesh* mesh, Material* material, Texture2D* _texture, float x, float y, float z);
+		Cube(Mesh* mesh, bool isSpinning, Material* material, Texture2D* _texture, float x, float y, float z);
 		~Cube();
 
 		void Draw();

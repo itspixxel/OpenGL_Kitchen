@@ -90,7 +90,6 @@ namespace OBJLoader
 		}
 
 		inFile.close();
-
 		return mesh;
 	}
 }
