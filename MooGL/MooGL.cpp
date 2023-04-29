@@ -289,14 +289,20 @@ void MooGL::Keyboard(unsigned char key, int x, int y)
 		// Move the camera forwards
 		case 'w':
 		{
-			camera->eye = camera->eye + dir * 0.08f;
+			if (objectFocusID != 3)
+			{
+				camera->eye = camera->eye + dir * 0.08f;
+			}
 			break;
 		}
 
 		// Move the camera backwards
 		case 's':
 		{
-			camera->eye = camera->eye - dir * 0.08f;
+			if (objectFocusID != 3)
+			{
+				camera->eye = camera->eye - dir * 0.08f;
+			}
 			break;
 		}
 		// Rotate around current object in the left direction
@@ -350,7 +356,7 @@ void MooGL::SpecialInput(int key, int x, int y)
 			if (objectFocusID == 0)
 			{
 				Vector3 currentPos = objects["toaster"]->GetPosition();
-				Vector3 newPos = currentPos + Vector3(0.0f, 0.0f, 0.5f);
+				Vector3 newPos = currentPos - Vector3(0.0f, 0.0f, 0.5f);
 				//camera->eye = currentPos + Vector3(0.0f, 0.0f, 9.0f);
 				objects["toaster"]->SetPosition(newPos);
 			}
@@ -364,16 +370,9 @@ void MooGL::SpecialInput(int key, int x, int y)
 			if (objectFocusID == 2)
 			{
 				Vector3 currentPos = objects["teapot"]->GetPosition();
-				Vector3 newPos = currentPos + Vector3(0.0f, 0.0f, 0.5f);
+				Vector3 newPos = currentPos - Vector3(0.0f, 0.0f, 0.5f);
 				//camera->eye = currentPos + Vector3(0.0f, 0.0f, 9.0f);
 				objects["teapot"]->SetPosition(newPos);
-			}
-			if (objectFocusID == 3)
-			{
-				Vector3 currentPos = objects["xbot"]->GetPosition();
-				Vector3 newPos = currentPos + Vector3(0.0f, 0.0f, 0.5f);
-				//camera->eye = currentPos + Vector3(0.0f, 0.0f, 9.0f);
-				objects["kitchen"]->SetPosition(newPos);
 			}
 			break;
 		}
@@ -383,7 +382,7 @@ void MooGL::SpecialInput(int key, int x, int y)
 			if (objectFocusID == 0)
 			{
 				Vector3 currentPos = objects["toaster"]->GetPosition();
-				Vector3 newPos = currentPos - Vector3(0.0f, 0.0f, 0.5f);
+				Vector3 newPos = currentPos + Vector3(0.0f, 0.0f, 0.5f);
 				//camera->eye = currentPos + Vector3(0.0f, 0.0f, 9.0f);
 				objects["toaster"]->SetPosition(newPos);
 			}
@@ -397,16 +396,9 @@ void MooGL::SpecialInput(int key, int x, int y)
 			if (objectFocusID == 2)
 			{
 				Vector3 currentPos = objects["teapot"]->GetPosition();
-				Vector3 newPos = currentPos - Vector3(0.0f, 0.0f, 0.5f);
+				Vector3 newPos = currentPos + Vector3(0.0f, 0.0f, 0.5f);
 				//camera->eye = currentPos + Vector3(0.0f, 0.0f, 9.0f);
 				objects["teapot"]->SetPosition(newPos);
-			}
-			if (objectFocusID == 3)
-			{
-				Vector3 currentPos = objects["xbot"]->GetPosition();
-				Vector3 newPos = currentPos - Vector3(0.0f, 0.0f, 0.5f);
-				//camera->eye = currentPos + Vector3(0.0f, 0.0f, 9.0f);
-				objects["kitchen"]->SetPosition(newPos);
 			}
 			break;
 		}
@@ -424,7 +416,7 @@ void MooGL::SpecialInput(int key, int x, int y)
 			if (objectFocusID == 1)
 			{
 				Vector3 currentPos = objects["donut"]->GetPosition();
-				Vector3 newPos = currentPos - Vector3(0.5f, 0.0f, 0.0f);
+				Vector3 newPos = currentPos + Vector3(0.5f, 0.0f, 0.0f);
 				//camera->eye = currentPos + Vector3(0.0f, 0.0f, 9.0f);
 				objects["donut"]->SetPosition(newPos);
 			}
@@ -434,13 +426,6 @@ void MooGL::SpecialInput(int key, int x, int y)
 				Vector3 newPos = currentPos - Vector3(0.5f, 0.0f, 0.0f);
 				//camera->eye = currentPos + Vector3(0.0f, 0.0f, 9.0f);
 				objects["teapot"]->SetPosition(newPos);
-			}
-			if (objectFocusID == 3)
-			{
-				Vector3 currentPos = objects["xbot"]->GetPosition();
-				Vector3 newPos = currentPos - Vector3(0.5f, 0.0f, 0.0f);
-				//camera->eye = currentPos + Vector3(0.0f, 0.0f, 9.0f);
-				objects["kitchen"]->SetPosition(newPos);
 			}
 			break;
 		}
@@ -458,20 +443,13 @@ void MooGL::SpecialInput(int key, int x, int y)
 			if (objectFocusID == 1)
 			{
 				Vector3 currentPos = objects["donut"]->GetPosition();
-				Vector3 newPos = currentPos + Vector3(0.5f, 0.0f, 0.0f);
+				Vector3 newPos = currentPos - Vector3(0.5f, 0.0f, 0.0f);
 				//camera->eye = currentPos + Vector3(0.0f, 0.0f, 9.0f);
 				objects["donut"]->SetPosition(newPos);
 			}
 			if (objectFocusID == 2)
 			{
 				Vector3 currentPos = objects["teapot"]->GetPosition();
-				Vector3 newPos = currentPos + Vector3(0.5f, 0.0f, 0.0f);
-				//camera->eye = currentPos + Vector3(0.0f, 0.0f, 9.0f);
-				objects["teapot"]->SetPosition(newPos);
-			}
-			if (objectFocusID == 2)
-			{
-				Vector3 currentPos = objects["xbot"]->GetPosition();
 				Vector3 newPos = currentPos + Vector3(0.5f, 0.0f, 0.0f);
 				//camera->eye = currentPos + Vector3(0.0f, 0.0f, 9.0f);
 				objects["teapot"]->SetPosition(newPos);
@@ -515,7 +493,7 @@ void MooGL::SpecialInput(int key, int x, int y)
 				}
 				case 3:
 				{
-					camera->eye = objects["xbot"]->GetPosition() - Vector3(-2.5f, -8, 15);
+					camera->eye = objects["xbot"]->GetPosition() - Vector3(8.0f, -10, -25);
 					break;
 				}
 			}
@@ -557,7 +535,7 @@ void MooGL::SpecialInput(int key, int x, int y)
 				}
 				case 3:
 				{
-					camera->eye = objects["xbot"]->GetPosition() - Vector3(-2.5f, -8, 15);
+					camera->eye = objects["xbot"]->GetPosition() - Vector3(2.5f, -8, -15);
 					break;
 				}
 			}
