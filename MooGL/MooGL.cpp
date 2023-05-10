@@ -535,7 +535,7 @@ void MooGL::SpecialInput(int key, int x, int y)
 				}
 				case 3:
 				{
-					camera->eye = objects["xbot"]->GetPosition() - Vector3(2.5f, -8, -15);
+					camera->eye = objects["xbot"]->GetPosition() - Vector3(8.0f, -10, -25);
 					break;
 				}
 			}

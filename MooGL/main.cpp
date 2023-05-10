@@ -21,11 +21,14 @@ void CreateSceneGraph()
 	tree = new SceneGraph();
 
 	Node* root = tree->newNode("main");
-	Node* sceneManager = tree->addChild(root, "SceneManager");
-	Node* glutCallbacks = tree->addChild(sceneManager, "GLUTCallbacks");
-	Node* scene = tree->addSibling(glutCallbacks, "Scene");
-	Node* structs = tree->addChild(sceneManager, "Structures");
-	Node* sceneKitchen = tree->addChild(structs, "Cube");
+	Node* glutCallbacks = tree->addChild(root, "GLUTCallbacks");
+	Node* sceneManager = tree->addChild(glutCallbacks, "Scene Manager");
+	Node* scene = tree->addSibling(sceneManager, "Scene");
+	Node* MooGL = tree->addChild(scene, "MooGL");
+	Node* structs = tree->addChild(scene, "Structures");
+	Node* texture2D = tree->addChild(structs, "Texture2D");
+	Node* meshLoader = tree->addChild(texture2D, "Mesh Loader");
+	Node* cube = tree->addChild(meshLoader, "Cube");
 
 	tree->traverseTree(root);
 }

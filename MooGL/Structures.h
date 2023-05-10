@@ -113,6 +113,7 @@ struct TexCoord
 {
 	GLfloat u, v;
 };
+
 struct Face
 {
 	GLint vertexIndex;
