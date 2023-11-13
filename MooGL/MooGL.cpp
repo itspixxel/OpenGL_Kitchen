@@ -67,7 +67,7 @@ void MooGL::InitObjects()
 	OBJMesh* donutMesh = OBJLoader::LoadOBJ((char*)"objects/OBJ_Donut.obj");
 	OBJMesh* teapotMesh = OBJLoader::LoadOBJ((char*)"objects/OBJ_Teapot.obj");
 	OBJMesh* xBotMesh = OBJLoader::LoadOBJ((char*)"objects/OBJ_XBot.obj");
-	OBJMesh* kitchenScene = OBJLoader::LoadOBJ((char*)"objects/OBJ_KitchenScene.obj");
+	OBJMesh* kitchenScene = OBJLoader::LoadOBJ((char*)"objects/OBJ_KitchenScene01.obj");
 
 	// Initialize materials
 	Material* crateMaterial = new Material();
@@ -119,6 +119,9 @@ void MooGL::InitObjects()
 	Texture2D* marbleTexture = new Texture2D();
 	marbleTexture->Load((char*)"textures/TX_Marble.bmp", 512, 512);
 
+	Texture2D* kitchenTexture = new Texture2D();
+	kitchenTexture->Load((char*)"textures/TX_Kitchen.bmp", 4096, 4096);
+
 	Texture2D* woodTexture = new Texture2D();
 	woodTexture->Load((char*)"textures/TX_Wood.bmp", 512, 512);
 
@@ -132,7 +135,7 @@ void MooGL::InitObjects()
 	objects["donut"] = new OBJObject(donutMesh, false, donutMaterial, marbleTexture, 5.0f, -5.8f, 12.5f);
 	objects["teapot"] = new OBJObject(teapotMesh, false, teapotMaterial, marbleTexture, 4.5f, -4.3f, -10.0f);
 	objects["xbot"] = new OBJObject(xBotMesh, true, teapotMaterial, woodTexture, 0.0f, 0.0f, 5.0f);
-	objects["kitchen"] = new OBJObject(kitchenScene, false, kitchenMaterial, marbleTexture, 0.0, 0.0f, 0.0f);
+	objects["kitchen"] = new OBJObject(kitchenScene, false, kitchenMaterial, kitchenTexture, 0.0, 0.0f, 0.0f);
 
 	camera = new Camera();
 	camera->up.y = 1.0f;
